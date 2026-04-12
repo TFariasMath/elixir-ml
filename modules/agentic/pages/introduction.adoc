@@ -1,0 +1,59 @@
+= Introducción a la Programación Agéntica
+
+== ¿Qué es un Token?
+
+La velocidad de generación medida en tokens por segundo es el factor que define el rendimiento y usabilidad de los modelos de LLMs. Los tokens representan las unidades mínimas en las que se descompone el texto (palabras, sílabas o incluso caracteres), y la rapidez con la que un modelo puede procesar y generar estas unidades determina su eficiencia en tareas como la creación de texto, la traducción o el análisis de datos.
+
+Esta velocidad depende de varios factores: la arquitectura del modelo (por ejemplo, cuántos parámetros tiene), la capacidad de cómputo (potencia de la GPU o CPU utilizada) y la optimización del software (uso de librerías como CUDA, cuDNN o frameworks optimizados como Hugging Face Transformers).
+
+== ¿Cómo elegir el Agente?
+
+Para poder comparar los modelos de programación agéntica disponibles existen
+herramientas como https://arena.ai/[Arena.ai]. Cada agente tendrá tareas
+donde se es más idóneo. Por ejemplo algunos son especialistas en la escritura de texto, 
+otros de traducción, otros de programación, etc.
+En específico se puede ver la https://arena.ai/leaderboard/code[tabla de liderazgo para programación].
+
+También es importante considerar el factor precio, por lo cual se puede
+cotizar en https://llm-price.com/[LLM Price]. Normalmente la comparación estándar
+es el valor por el millón de tokens generados. Se puede utilizar también la web
+de https://www.swebench.com/index.html[SWE Bench], aunque sus valores no están 
+muy actualizados y pueden variar.
+
+=== Modelos Populares
+
+Se puede ver los últimos modelos en la siguiente web https://hasbeenreleased.com/[Has been Released].
+
+- Claude Code
+- Cursor
+- Sonnet
+- Haiku
+
+== ¿Se puede instalar modelos locales?
+
+Si bien es posible comprar un computador potente como un https://www.elladodelmal.com/2024/12/como-montar-tu-propio-servidor-de.html[Mac Mini] (Una configuración mínima para poder ejecutar modelos decentes sería un Macbook Pro M4 con 32GB de RAM y 1TB de disco duro).
+e instalar un modelo local como https://ollama.com/[oLlama], https://lmstudio.ai/[LMStudio] o https://pinokio.co/[Pinokio]. Para simular las capacidades de cómputo de un modelo de subscripción como https://www.anthropic.com/claude/opus[Opus 4.6] se necesitaría una inversión
+grande en equipos que no todos tienen la capacidad económica de costear.
+
+Por lo que utilizar modelos locales, si bien es factible. Para entornos
+de producción y uso profesional es más recomendable las herramientas
+de subscripción disponibles o por lo menos un híbrido entre opciones locales y la nube.
+
+++++
+<iframe width="100%" height="515" src="https://www.youtube.com/embed/GBR6pHZ68Ho?si=ZwYlUv5FLrsumKzY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+++++
+
+=== OLlama, LMStudio, Pinokio
+
+https://ollama.com/[Ollama] es una plataforma pensada para ejecutar modelos de lenguaje directamente en local de una manera sencilla y eficiente. Es como el "plug and play" de los LLMs: descargas, configuras y en unos minutos tienes funcionando modelos como _LLaMA_, _Mistral_ o _Vicuna_. Su gran ventaja es que está optimizado para funcionar en hardware local, ya sea un Mac con Apple Silicon o una GPU NVIDIA decente, lo que permite usar modelos bastante potentes sin depender de la nube ni complicar con instalaciones infernales. Además, la biblioteca de modelos de Ollama ya viene ajustada y lista para usar, lo que te ahorra tiempo y dolores de cabeza.
+
+https://lmstudio.ai/[LMStudio] está pensado más para el fine-tuning y personalización de modelos, RAG, etcétera. Aquí no solo ejecutas un LLM, sino que lo adaptas a lo que necesitas: Se puede entrenar un modelo propio con datasets específicos y ajustar los parámetros para obtener resultados optimizados y personalizados. Es ideal si se tiene un proyecto concreto y se requiere que el modelo "hable" o "sepa" del contexto que quieras. 
+
+https://pinokio.co/[Pinokio] Es un "hub" de aplicaciones que permite instalar, ejecutar y controlar de manera programada y local cualquier aplicación de IA con un solo clic. _Pinokio_ automatiza todo el proceso. 
+
+=== Hermes, OpenClaw
+
+
+== Referencias
+
+- https://www.elladodelmal.com/2024/12/como-montar-tu-propio-servidor-de.html
