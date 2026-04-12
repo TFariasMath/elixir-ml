@@ -149,6 +149,34 @@ y agrega estas opciones:
 <2> Usa ElixirLS como formateador (respeta `.formatter.exs`).
 <3> Asocia los templates de Phoenix para tener resaltado de sintaxis.
 
+=== IA en el Editor (Extensiones)
+
+Para muchos desarrolladores, la forma más cómoda de usar IA es directamente dentro del editor. Aquí tienes las mejores opciones para VS Code:
+
+==== 1. OpenCode
+Ya que usaremos la aplicación de escritorio más adelante, puedes instalar su extensión para VS Code. Te proporciona un chat lateral y autocompletado en tus archivos `.ex` y `.exs`, compartiendo la misma configuración.
+
+[source, bash]
+----
+code --install-extension anomalyco.opencode
+----
+
+==== 2. Continue (Modelos Locales)
+https://continue.dev/[Continue] es una extensión open source muy potente. Es ideal si planeas usar **Ollama** para tener autocompletado gratuito y completamente privado en tu propia máquina, sin que tu código salga de tu computador.
+
+[source, bash]
+----
+code --install-extension Continue.continue
+----
+
+==== 3. GitHub Copilot
+El estándar actual de la industria. Si activas la capa gratuita ("Copilot Free") en tu cuenta de GitHub, instalar esta extensión te da autocompletado instantáneo alimentado por modelos como GPT-4o o Claude 3.5 Sonnet.
+
+[source, bash]
+----
+code --install-extension GitHub.copilot
+----
+
 == OpenCode desktop
 
 Es un agente de código que te ayuda a escribir y depurar código desde una interfaz gráfica o terminal.
