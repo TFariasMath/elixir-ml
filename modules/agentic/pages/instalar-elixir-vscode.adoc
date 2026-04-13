@@ -273,8 +273,6 @@ Al abrir OpenCode en tu proyecto de Elixir, verás una interfaz de chat donde pu
 * Pedir que genere funciones en Elixir
 * Solicitar depuración de errores
 * Cambiar entre modo *Build* (hace cambios) y *Plan* (solo sugiere) usando la tecla `Tab`
-* Usar `@` para referenciar archivos específicos del proyecto
-* Deshacer cambios con el comando `/undo`
 
 .Ejemplo: Generar código Elixir
 [source, text]
