@@ -1,2 +1,3 @@
 .Programación Agéntica
 * xref:introduction.adoc[]
+* xref:instalar-elixir-vscode.adoc[Configurar VSCode con Elixir y OpenCode]

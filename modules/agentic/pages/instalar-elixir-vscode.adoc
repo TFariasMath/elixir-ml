@@ -1,0 +1,392 @@
+= Configurar VSCode con Elixir y OpenCode
+:icons: font
+
+Este capítulo explica cómo dejar listo tu entorno para trabajar con Elixir y usar agentes de IA.
+
+== Requisitos Previos
+
+Antes de comenzar, asegúrate de tener:
+
+* https://code.visualstudio.com/[Visual Studio Code] instalado.
+* Una terminal disponible (PowerShell en Windows, bash/zsh en Linux).
+* Conexión a internet para descargar los paquetes.
+
+== Erlang/OTP
+
+[IMPORTANT]
+====
+Erlang debe instalarse *antes* que Elixir. Sin la BEAM (la máquina virtual de Erlang),
+Elixir no puede ejecutarse.
+====
+
+=== Windows
+
+Puedes usar **winget** (incluido en Windows 10/11):
+
+[source, powershell]
+----
+winget install Erlang.OTP
+----
+
+También puedes descargar el instalador manualmente desde https://www.erlang.org/downloads[erlang.org/downloads].
+
+=== Linux
+
+.Ubuntu / Debian
+[source, bash]
+----
+sudo apt update
+sudo apt install erlang
+----
+
+.Fedora / RHEL
+[source, bash]
+----
+sudo dnf install erlang
+----
+
+== Elixir
+
+=== Windows
+
+Con **winget**:
+
+[source, powershell]
+----
+winget install ElixirLang.Elixir
+----
+
+O descarga el instalador desde https://elixir-lang.org/install.html#windows[elixir-lang.org].
+
+=== Linux
+
+.Ubuntu / Debian
+[source, bash]
+----
+sudo apt install elixir
+----
+
+.Fedora / RHEL
+[source, bash]
+----
+sudo dnf install elixir
+----
+
+== Verificar instalación
+
+[source, bash]
+----
+erl -version  # <1>
+elixir --version  # <2>
+----
+<1> Muestra la versión de Erlang/OTP instalada.
+<2> Muestra la versión de Elixir y confirma que detecta la BEAM.
+
+Deberías ver algo como:
+
+[source, text]
+----
+Erlang/OTP 27 [erts-15.x]
+
+Elixir 1.18.x (compiled with Erlang/OTP 27)
+----
+
+[TIP]
+====
+Prueba el shell interactivo con `iex`. Escribe `IO.puts("¡Hola desde Elixir!")` y presiona Enter.
+Para salir, presiona `Ctrl+C` dos veces.
+====
+
+== Configuración de VS Code
+
+=== Extensiones recomendadas
+
+Abre VSCode y ve a la pestaña de extensiones (`Ctrl+Shift+X`). Busca e instala:
+
+==== ElixirLS
+
+image::elixir-ls-extension.png[Marketplace de Extensiones - ElixirLS]
+
+Es la pieza fundamental. Proporciona autocompletado, diagnóstico de errores y formateo automático.
+
+Búscala como `ElixirLS` en el marketplace o instálala desde la terminal:
+
+[source, bash]
+----
+code --install-extension JakeBecker.elixir-ls
+----
+
+==== Livebook (opcional)
+
+Si quieres usar https://livebook.dev/[Livebook] (notebooks interactivos para Elixir,
+similar a Jupyter), esta extensión te permite abrir archivos `.livemd` directamente
+en VSCode.
+
+[source, bash]
+----
+code --install-extension livebook.vscode-livebook
+----
+
+=== IA en el Editor (Extensiones)
+
+Para muchos desarrolladores, la forma más cómoda de usar IA es directamente dentro del editor. Aquí tienes las mejores opciones para VS Code:
+
+==== 1. OpenCode
+Ya que usaremos la aplicación de escritorio más adelante, puedes instalar su extensión para VS Code. Te proporciona un chat lateral y autocompletado en tus archivos `.ex` y `.exs`, compartiendo la misma configuración.
+
+[source, bash]
+----
+code --install-extension anomalyco.opencode
+----
+
+==== 2. Continue (Modelos Locales)
+https://continue.dev/[Continue] es una extensión open source muy potente. Es ideal si planeas usar **Ollama** para tener autocompletado gratuito y completamente privado en tu propia máquina, sin que tu código salga de tu computador.
+
+[source, bash]
+----
+code --install-extension Continue.continue
+----
+
+==== 3. GitHub Copilot
+El estándar actual de la industria. Si activas la capa gratuita ("Copilot Free") en tu cuenta de GitHub, instalar esta extensión te da autocompletado instantáneo alimentado por modelos como GPT-4o o Claude 3.5 Sonnet.
+
+[source, bash]
+----
+code --install-extension GitHub.copilot
+----
+
+== OpenCode desktop
+
+Es un agente de código que te ayuda a escribir y depurar código desde una interfaz gráfica o terminal.
+
+=== Características
+
+* icon:plug[] Multi-Proveedor: Compatible con más de 75 proveedores de LLM.
+* icon:desktop[] Aplicación de escritorio: Interfaz gráfica con chat, revisión de cambios y navegación de archivos.
+* icon:code[] Integración LSP: Carga automáticamente los Language Servers (como ElixirLS) para darle contexto al modelo.
+* icon:clone[] Multi-sesión: Puedes tener múltiples agentes trabajando en paralelo sobre el mismo proyecto.
+* icon:github[] GitHub Copilot: Puedes iniciar sesión con tu cuenta de GitHub para usar tu plan de Copilot.
+* icon:lock[] Privacidad: OpenCode no almacena tu código ni datos de contexto.
+
+[NOTE]
+====
+*Opinión Personal*: OpenCode es como Google Antigravity pero con más opciones de configuración y modelos disponibles, además de ser open source.
+====
+
+=== Instalación
+
+==== Windows
+
+Descarga el instalador directamente desde la web oficial:
+
+1. Ve a https://opencode.ai/download[opencode.ai/download]
+2. Descarga el instalador para Windows (x64)
+3. Ejecuta el archivo `.exe` y sigue las instrucciones
+
+También puedes instalar la versión de línea de comandos con:
+
+.Usando Chocolatey
+[source, powershell]
+----
+choco install opencode
+----
+
+==== Linux
+
+.icon:chevron-down[] Instalación en Linux (click para expandir)
+[%collapsible]
+======
+Descarga el paquete `.deb` o `.rpm` desde https://opencode.ai/download[opencode.ai/download],
+o instala la versión de línea de comandos:
+
+.Usando Homebrew
+[source, bash]
+----
+brew install anomalyco/tap/opencode
+----
+
+.Usando el script de instalación
+[source, bash]
+----
+curl -fsSL https://opencode.ai/install | bash
+----
+
+.Arch Linux
+[source, bash]
+----
+sudo pacman -S opencode
+----
+======
+
+=== Configuración
+
+[TIP]
+====
+La forma más rápida de configurar OpenCode es usar el comando `/connect` dentro de la aplicación.
+Te guiará paso a paso para conectar tu proveedor de IA preferido.
+====
+
+==== Configuración manual
+
+OpenCode usa un archivo `opencode.json` que se puede colocar en:
+
+1. La raíz de tu proyecto (configuración local)
+2. `$HOME/.config/opencode/opencode.json` (configuración global)
+
+Ejemplo para usar con Anthropic:
+
+[source, json]
+----
+{
+  "providers": {
+    "anthropic": {
+      "apiKey": "tu-api-key-aqui",  // <1>
+      "disabled": false
+    }
+  },
+  "lsp": {
+    "elixir": {
+      "command": "elixir-ls"  // <2>
+    }
+  }
+}
+----
+<1> Reemplaza con tu API key real. Nunca la subas a un repositorio público.
+<2> Conecta ElixirLS para que el agente entienda tu código Elixir.
+
+[NOTE]
+====
+Las API keys también se pueden configurar como variables de entorno:
+`ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`, `GROQ_API_KEY`.
+
+Si tienes GitHub Copilot, puedes iniciar sesión directamente desde OpenCode
+sin necesidad de configurar API keys adicionales.
+====
+
+=== Uso básico
+
+image::opencode-desktop.png[Interfaz de escritorio de OpenCode]
+
+Al abrir OpenCode en tu proyecto de Elixir, verás una interfaz de chat donde puedes:
+
+* Escribir preguntas sobre tu código
+* Pedir que genere funciones en Elixir
+* Solicitar depuración de errores
+* Cambiar entre modo *Build* (hace cambios) y *Plan* (solo sugiere) usando la tecla `Tab`
+
+.Ejemplo: Generar código Elixir
+[source, text]
+----
+Crea una función que calcule el factorial de un número usando recursión en Elixir
+----
+
+OpenCode generará algo como:
+
+[source, elixir]
+----
+defmodule Matematica do
+  @doc """
+  Calcula el factorial de un número entero no negativo.
+
+  ## Ejemplos
+
+      iex> Matematica.factorial(5)
+      120
+
+      iex> Matematica.factorial(0)
+      1
+  """
+  def factorial(0), do: 1
+  def factorial(n) when n > 0 do
+    n * factorial(n - 1)
+  end
+end
+----
+
+== Opciones Gratuitas
+
+OpenCode permite usar varios modelos de calidad sin costo a través de su servicio Zen o corriendo modelos localmente.
+
+=== Modelos de OpenCode Zen
+
+image::opencode-free-models.png[Modelos gratuitos en OpenCode Zen]
+
+Dentro de la aplicación, en el selector de modelos, encontrarás varias opciones gratuitas:
+
+[cols="1,2,2", options="header"]
+|===
+| Modelo
+| Punto Fuerte
+| Uso Ideal
+
+| Big Pickle
+| Versatilidad general
+| Tareas variadas, exploración de código
+
+| MiniMax M2.5 Free
+| Equilibrio velocidad/calidad
+| Programación diaria, refactorización
+|===
+
+Para usarlos, solo tienes que seleccionarlos en el menú desplegable de modelos dentro de OpenCode.
+
+=== Ollama (modelos locales)
+
+Si prefieres no depender de servicios en la nube, puedes instalar
+https://ollama.com/[Ollama] y ejecutar modelos directamente en tu computador.
+Es completamente gratuito y privado, aunque requiere hardware con buena
+capacidad de procesamiento (mínimo 16GB de RAM recomendados).
+
+[source, bash]
+----
+ollama pull llama3.2  # <1>
+# OpenCode se conecta automáticamente al endpoint local  # <2>
+----
+<1> Descarga el modelo Llama 3.2 (~4GB). Solo necesitas hacerlo una vez.
+<2> OpenCode detecta Ollama en `localhost:11434` sin configuración adicional.
+
+[NOTE]
+====
+Para un comparativo detallado de modelos locales (Ollama, LMStudio, Pinokio)
+y cuándo conviene usarlos vs. servicios en la nube, consulta el capítulo
+xref:introduction.adoc[Introducción a la Programación Agéntica].
+====
+
+== Caso de Uso: Construyendo un Temporizador con OpenCode
+
+Ahora que tenemos nuestro entorno listo, usaremos OpenCode para crear una aplicación funcional en Elixir. En vez de un simple "Hola Mundo", construiremos un **temporizador de eventos especiales**.
+
+=== El Prompt Inicial
+
+La ventaja de usar agentes es que podemos describir la lógica compleja que necesitamos antes de escribir código. Ingresamos las siguientes instrucciones en OpenCode:
+
+image::opencode-prompt.png[Prompt utilizado en OpenCode]
+
+Como se observa, solicitamos una app que anote fechas, persista los datos, corra en segundo plano, y cuente con una interfaz para administrar (CRUD) los eventos mostrando notificaciones del sistema.
+
+=== El Resultado
+
+OpenCode genera el proyecto completo (equivalente a `mix new event_timer`), configura las dependencias y estructura la lógica en segundo plano.
+
+image::opencode-app-ui.png[Interfaz de la aplicación Event Timer]
+
+La aplicación final resultante incluye una interfaz clara donde podemos ver los eventos próximos, la cuenta regresiva, y gestionar las fechas importantes.
+
+[NOTE]
+====
+**¿Quieres explorar el código y probarlo?** 
+Para no saturar este artículo, hemos habilitado la carpeta `apps/` en la raíz del repositorio. 
+
+Puedes encontrar todo el código funcional de esta aplicación en: `apps/event_timer`.
+====
+
+== Referencias
+
+- https://opencode.ai/[OpenCode - Sitio Oficial]
+- https://github.com/anomalyco/opencode[OpenCode - GitHub]
+- https://opencode.ai/download[OpenCode - Descargar Desktop]
+- https://elixir-lang.org/install.html[Instalar Elixir - Sitio Oficial]
+- https://www.erlang.org/downloads[Descargar Erlang/OTP]
+- https://github.com/JakeBecker/elixir-ls[ElixirLS - Language Server]
+- https://code.visualstudio.com/[Visual Studio Code]
+- https://ollama.com/[Ollama]

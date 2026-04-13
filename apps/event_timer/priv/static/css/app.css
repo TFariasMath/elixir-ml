@@ -1,0 +1,35 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #F5F6FA; color: #2C3E50; }
+.container { max-width: 900px; margin: 0 auto; padding: 20px; }
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+h1 { font-size: 24px; font-weight: bold; color: #4A90D9; }
+.btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; transition: all 0.2s; }
+.btn-primary { background: #4A90D9; color: white; }
+.btn-primary:hover { background: #357ABD; }
+.btn-secondary { background: #E74C3C; color: white; }
+.btn-secondary:hover { background: #C0392B; }
+.btn-small { padding: 6px 12px; font-size: 12px; }
+.btn-outline { background: transparent; border: 1px solid #4A90D9; color: #4A90D9; }
+.btn-outline:hover { background: #4A90D9; color: white; }
+.events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.event-card { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; }
+.event-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+.event-card.passed { opacity: 0.6; }
+.event-card.passed .event-countdown { color: #7F8C8D; }
+.event-name { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+.event-countdown { font-size: 24px; font-weight: bold; color: #E74C3C; margin-bottom: 4px; }
+.event-date { font-size: 14px; color: #7F8C8D; margin-bottom: 8px; }
+.event-description { font-size: 14px; color: #7F8C8D; margin-bottom: 12px; }
+.event-actions { display: flex; gap: 8px; margin-top: 12px; }
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.modal { background: white; border-radius: 12px; padding: 24px; width: 400px; max-width: 90%; }
+.modal h2 { margin-bottom: 20px; font-size: 20px; }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 500; }
+.form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #DDD; border-radius: 6px; font-size: 14px; }
+.form-group input:focus, .form-group textarea:focus { outline: none; border-color: #4A90D9; }
+.form-group textarea { resize: vertical; min-height: 80px; }
+.modal-actions { display: flex; gap: 12px; justify-content: flex-end; }
+.empty-state { text-align: center; padding: 60px 20px; color: #7F8C8D; }
+.empty-state h2 { font-size: 20px; margin-bottom: 12px; color: #2C3E50; }
+.status-bar { background: #2C3E50; color: white; padding: 12px 20px; border-radius: 8px; margin-top: 24px; font-size: 14px; display: flex; justify-content: space-between; }
