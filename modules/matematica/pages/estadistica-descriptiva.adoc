@@ -10,17 +10,17 @@ Estas medidas buscan identificar el "centro" de la distribución de los datos.
 
 1. **Media Aritmética ($\bar{x}$)**: Es el promedio de los valores. Es sensible a valores atípicos (*outliers*).
 [stem]
-++++
+--
 \bar{x} = \frac{1}{n} \sum_{i=1}^n x_i
-++++
+--
 
 2. **Mediana**: El valor que divide el conjunto de datos exactamente a la mitad cuando están ordenados. Es una medida robusta frente a valores atípicos.
 
 3. **Media Ponderada**: Útil cuando algunos datos tienen más importancia o "peso" que otros.
 [stem]
-++++
+--
 \bar{x}_w = \frac{\sum w_i x_i}{\sum w_i}
-++++
+--
 
 == Medidas de Dispersión
 
@@ -30,16 +30,16 @@ Indican qué tan alejados están los datos respecto al centro.
 La varianza mide la media de los cuadrados de las desviaciones respecto a la media. La desviación estándar es su raíz cuadrada y mantiene las mismas unidades que los datos originales.
 
 [stem]
-++++
+--
 \sigma^2 = \frac{1}{n} \sum_{i=1}^n (x_i - \bar{x})^2
-++++
+--
 
 === Rango Intercuartílico (IQR)
 Mide la dispersión del 50% central de los datos. Se calcula como la diferencia entre el tercer cuartil ($Q_3$) y el primer cuartil ($Q_1$).
 [stem]
-++++
+--
 IQR = Q_3 - Q_1
-++++
+--
 
 [TIP]
 ====
@@ -53,9 +53,9 @@ Más allá del centro y la dispersión, la **asimetría** nos indica si los dato
 === Coeficiente de Asimetría de Fisher ($G_1$)
 Es la medida más utilizada en software estadístico. Se basa en el tercer momento central estandarizado.
 [stem]
-++++
+--
 G_1 = \frac{\frac{1}{n} \sum_{i=1}^n (x_i - \bar{x})^3}{\sigma^3}
-++++
+--
 *   **$G_1 = 0$**: Distribución simétrica (como la Normal).
 *   **$G_1 > 0$**: Asimetría positiva (cola a la derecha).
 *   **$G_1 < 0$**: Asimetría negativa (cola a la izquierda).
@@ -84,15 +84,15 @@ Cuando analizamos dos variables ($X$ e $Y$) simultáneamente, buscamos entender 
 
 1. **Covarianza**: Indica la dirección de la relación lineal.
 [stem]
-++++
+--
 cov(X, Y) = \frac{1}{n} \sum (x_i - \bar{x})(y_i - \bar{y})
-++++
+--
 
 2. **Coeficiente de Correlación de Pearson ($r$)**: Escala la covarianza entre $-1$ y $1$.
 [stem]
-++++
+--
 r = \frac{cov(X, Y)}{\sigma_X \sigma_Y}
-++++
+--
 
 [IMPORTANT]
 ====

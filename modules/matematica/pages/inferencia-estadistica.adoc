@@ -11,9 +11,9 @@ Cuando trabajamos con una población que sigue una distribución $\mathcal{N}(\m
 === Caso 1: Varianza ($\sigma$) Conocida
 En este escenario usamos la **Distribución Normal Estándar ($Z$)**. El intervalo de confianza se define como:
 [stem]
-++++
+--
 I = \left[ \bar{x} \mp z_{\alpha/2} \frac{\sigma}{\sqrt{n}} \right]
-++++
+--
 
 [source, elixir]
 ----
@@ -33,9 +33,9 @@ end
 === Caso 2: Varianza ($\sigma$) Desconocida
 Aquí debemos usar la cuasivarianza muestral ($S^2$) y la **Distribución t de Student** con $n-1$ grados de libertad.
 [stem]
-++++
+--
 I = \left[ \bar{x} \mp t_{n-1:\alpha/2} \frac{S}{\sqrt{n}} \right]
-++++
+--
 
 [source, elixir]
 ----
@@ -57,15 +57,15 @@ Gracias al **Teorema Central del Límite**, si el tamaño de la muestra $n$ es s
 
 *   **Población Binomial ($B(1, p)$)**:
 [stem]
-++++
+--
 I = \left[ \hat{p} \mp z_{\alpha/2} \sqrt{\frac{\hat{p}(1-\hat{p})}{n}} \right]
-++++
+--
 
 *   **Población Poisson ($\mathcal{P}(\lambda)$)**:
 [stem]
-++++
+--
 I = \left[ \bar{x} \mp z_{\alpha/2} \sqrt{\frac{\bar{x}}{n}} \right]
-++++
+--
 
 == Inferencia sobre la Varianza ($\sigma^2$)
 
@@ -73,9 +73,9 @@ Para inferir sobre la dispersión de una población normal, recurrimos a la dist
 
 *   **Varianza con $\mu$ desconocida**:
 [stem]
-++++
+--
 I = \left[ \frac{(n-1)S^2}{\chi^2_{n-1:\alpha/2}} , \frac{(n-1)S^2}{\chi^2_{n-1:1-\alpha/2}} \right]
-++++
+--
 
 [source, elixir]
 ----
@@ -97,9 +97,9 @@ end
 Para decidir si dos poblaciones tienen la misma varianza, comparamos el ratio de sus cuasivarianzas usando la **Distribución F de Snedecor**.
 
 [stem]
-++++
+--
 \frac{S_1^2 / \sigma_1^2}{S_2^2 / \sigma_2^2} \to F_{n_1-1, n_2-1}
-++++
+--
 
 [TIP]
 ====

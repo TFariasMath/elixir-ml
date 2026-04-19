@@ -59,21 +59,21 @@ Cuando trabajamos con funciones que toman vectores como entrada o salida, las re
 Si tenemos una función escalar $f(\vec{x})$ que depende de un vector $\vec{x}$, el gradiente es el vector de todas sus derivadas parciales:
 
 [stem]
-++++
+--
 \nabla f(\vec{x}) = \begin{pmatrix} \frac{\partial f}{\partial x_1} \\ \frac{\partial f}{\partial x_2} \\ \vdots \\ \frac{\partial f}{\partial x_n} \end{pmatrix}
-++++
+--
 
 === El Jacobiano ($\mathbf{J}$)
 Si tenemos una función vectorial $\vec{f}(\vec{x})$ (una función que toma un vector y devuelve otro), el Jacobiano es la matriz que contiene todas las derivadas parciales posibles:
 
 [stem]
-++++
+--
 \mathbf{J} = \frac{\partial \vec{f}}{\partial \vec{x}} = \begin{pmatrix}
 \frac{\partial f_1}{\partial x_1} & \dots & \frac{\partial f_1}{\partial x_n} \\
 \vdots & \ddots & \vdots \\
 \frac{\partial f_m}{\partial x_1} & \dots & \frac{\partial f_m}{\partial x_n}
 \end{pmatrix}
-++++
+--
 
 [IMPORTANT]
 ====
