@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>La Esencia de la Acción: ¿Qué es un Agente? :: Elixir ML &amp; LLM</title>
+    <link rel="canonical" href="https://elixircl.github.io/elixir-ml/agentic/que-es-un-agente.html">
+    <link rel="prev" href="introduction.html">
+    <link rel="next" href="peas.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/js/vendor/styles/monokai.css">  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://elixircl.github.io/elixir-ml">Elixir ML &amp; LLM</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Buscar">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+    -->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">Elixir ML &amp; LLM</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Programación Agéntica</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="introduction.html">Introducción a la Programación Agéntica</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="que-es-un-agente.html">¿Qué es un agente?</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="peas.html">PEAS: Descripción de Tareas</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="instalar-elixir-vscode.html">Configurar VSCode con Elixir y OpenCode</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Apéndice: Matemática</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../matematica/logica-proposicional.html">Lógica Proposicional</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../matematica/algebra-lineal.html">Álgebra Lineal</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../matematica/estadistica-descriptiva.html">Estadística Descriptiva</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../matematica/modelos-probabilisticos.html">Modelos Probabilísticos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../matematica/inferencia-estadistica.html">Inferencia Estadística</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Elixir ML &amp; LLM</span>
+    <span class="version"></span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">Elixir ML & LLM</a></div>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Elixir ML & LLM</a></li>
+    <li>Programación Agéntica</li>
+    <li><a href="que-es-un-agente.html">¿Qué es un agente?</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="file:///C:/Users/USER/Documents/Apuntes_Elixir_Libro/elixir-ml/./modules/agentic/pages/que-es-un-agente.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contenidos" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">La Esencia de la Acción: ¿Qué es un Agente?</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>En el vasto teatro de la computación, un <strong>agente</strong> no es simplemente un conjunto de líneas de código que esperan ser ejecutadas. Es, en su definición más pura, cualquier entidad que <strong>percibe</strong> su entorno y <strong>actúa</strong> sobre él. Como un artesano que observa la madera antes de tallarla, el agente utiliza sus <strong>sensores</strong> para recibir información y sus <strong>actuadores</strong> para transformar la realidad.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="el-diálogo-con-el-entorno"><a class="anchor" href="#el-diálogo-con-el-entorno"></a>El Diálogo con el Entorno</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Para entender a un agente, debemos observar su conversación continua con el mundo. A cada fragmento de información que sus sensores capturan lo llamamos <strong>percepto</strong>. A lo largo de su existencia, el agente acumula una <strong>secuencia de perceptos</strong>, un historial que define todo lo que ha conocido hasta el momento presente.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>La identidad de un agente reside en su <strong>función</strong>. Matemáticamente, es el mapa que asocia cada posible secuencia de perceptos con una acción. Su <strong>programa</strong>, por otro lado, es la encarnación física de esa función: el motor que corre sobre la arquitectura.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock text-center kroki-format-svg kroki">
+<div class="content">
+<img src="_images/diag-acc1c032c10c540cb2538a89021048c42cb2b6f6.svg" alt="Diagram">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="el-ideal-de-la-racionalidad"><a class="anchor" href="#el-ideal-de-la-racionalidad"></a>El Ideal de la Racionalidad</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>No nos conformamos con agentes que simplemente actúen; buscamos la <strong>racionalidad</strong>. Ser racional no implica ser perfecto, sino actuar con propósito. Un agente es racional si, basándose en lo que ha percibido y en el conocimiento que ya posee, selecciona la acción que <strong>maximiza su medida de desempeño</strong>.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>La racionalidad es hija de la medida de éxito que le otorgamos. Si definimos mal el objetivo, el agente será "estúpidamente racional", alcanzando metas absurdas con una eficiencia impecable.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="la-capacidad-de-aprender"><a class="anchor" href="#la-capacidad-de-aprender"></a>La Capacidad de Aprender</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Un agente que no varía su proceder ante un mundo cambiante es poco más que un autómata. El <strong>aprendizaje</strong> es la facultad de elevar el desempeño tras observar los resultados de sus propios actos. Es el proceso de ajustar sus mecanismos internos para que sus acciones futuras armonicen mejor con lo que el mundo le ha enseñado.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Aprendizaje Supervisado</strong>: Como un aprendiz que sigue los pasos de un maestro, el agente recibe ejemplos de "entrada y salida" para aprender a generalizar.</p>
+</li>
+<li>
+<p><strong>Aprendizaje por Refuerzo</strong>: Es la escuela de la experiencia pura; el agente recibe recompensas o castigos y debe descubrir por sí mismo qué camino le lleva a la gloria acumulada.</p>
+</li>
+<li>
+<p><strong>Aprendizaje No Supervisado</strong>: El agente busca patrones ocultos y armonías en los datos sin que nadie le diga qué está buscando.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>En su búsqueda de la verdad, el agente racional debe abrazar la <strong>Navaja de Ockham</strong>: ante dos explicaciones que expliquen igual de bien lo observado, la más sencilla suele ser la que refleja la verdadera naturaleza del mundo.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="las-cuatro-visiones-de-la-inteligencia"><a class="anchor" href="#las-cuatro-visiones-de-la-inteligencia"></a>Las Cuatro Visiones de la Inteligencia</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A lo largo de la historia, hemos intentado definir la Inteligencia Artificial a través de cuatro cristales distintos, dependiendo de si buscamos imitar la humanidad o alcanzar la razón pura:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Enfoque</th>
+<th class="tableblock halign-left valign-top">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Actuar como Humanos</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">El sueño de Alan Turing. El sistema debe ser indistinguible de nosotros en una conversación (Test de Turing).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Pensar como Humanos</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">El camino de la Ciencia Cognitiva. No basta el resultado; queremos que los procesos internos imiten la mente humana.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Pensar Racionalmente</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">La tradición logicista. El uso de silogismos y lógica formal para garantizar que cada paso sea una verdad irrefutable.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Actuar Racionalmente</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">El enfoque del Agente Racional. Hacer "lo correcto" para maximizar el éxito, incluso cuando el tiempo no permite un razonamiento perfecto.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="introduction.html">Introducción a la Programación Agéntica</a></span>
+  <span class="next"><a href="peas.html">PEAS: Descripción de Tareas</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script src="../_/js/vendor/lunr.js"></script>
+<script src="../_/js/search-ui.js" id="search-ui-script" data-site-root-path=".." data-snippet-length="100" data-stylesheet="../_/css/search.css"></script>
+<script async src="../search-index.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      ignoreHtmlClass: 'nostem|no-mathjax'
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  </body>
+</html>

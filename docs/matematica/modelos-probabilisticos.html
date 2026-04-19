@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Modelos Probabilísticos :: Elixir ML &amp; LLM</title>
+    <link rel="canonical" href="https://elixircl.github.io/elixir-ml/matematica/modelos-probabilisticos.html">
+    <link rel="prev" href="estadistica-descriptiva.html">
+    <link rel="next" href="inferencia-estadistica.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/js/vendor/styles/monokai.css">  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://elixircl.github.io/elixir-ml">Elixir ML &amp; LLM</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Buscar">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+    -->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">Elixir ML &amp; LLM</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Programación Agéntica</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../agentic/introduction.html">Introducción a la Programación Agéntica</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../agentic/que-es-un-agente.html">¿Qué es un agente?</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../agentic/peas.html">PEAS: Descripción de Tareas</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../agentic/instalar-elixir-vscode.html">Configurar VSCode con Elixir y OpenCode</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Apéndice: Matemática</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="logica-proposicional.html">Lógica Proposicional</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="algebra-lineal.html">Álgebra Lineal</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="estadistica-descriptiva.html">Estadística Descriptiva</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="modelos-probabilisticos.html">Modelos Probabilísticos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="inferencia-estadistica.html">Inferencia Estadística</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Elixir ML &amp; LLM</span>
+    <span class="version"></span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">Elixir ML & LLM</a></div>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Elixir ML & LLM</a></li>
+    <li>Apéndice: Matemática</li>
+    <li><a href="modelos-probabilisticos.html">Modelos Probabilísticos</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="file:///C:/Users/USER/Documents/Apuntes_Elixir_Libro/elixir-ml/./modules/matematica/pages/modelos-probabilisticos.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contenidos" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Modelos Probabilísticos</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>En este capítulo exploraremos los modelos matemáticos que nos permiten cuantificar la incertidumbre. Estos modelos son la base de la inferencia estadística y del aprendizaje automático, permitiéndonos predecir comportamientos basándonos en leyes de probabilidad fundamentales. Comprender qué representa cada variable es vital para calibrar correctamente los algoritmos de IA.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="distribuciones-discretas"><a class="anchor" href="#distribuciones-discretas"></a>Distribuciones Discretas</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Asociadas a experimentos con resultados contables y finitos (conteo de eventos, éxitos, fallos).</p>
+</div>
+<div class="sect2">
+<h3 id="distribución-binomial-bn-p"><a class="anchor" href="#distribución-binomial-bn-p"></a>Distribución Binomial ($B(n, p)$)</h3>
+<div class="paragraph">
+<p>Modeliza el número de éxitos en una secuencia de ensayos independientes de Bernoulli.</p>
+</div>
+<div class="paragraph">
+<p><strong>Variables del modelo:</strong>
+* $n$: Número total de ensayos o intentos independientes.
+* $p$: Probabilidad de éxito en cada ensayo individual ($0 \le p \le 1$).
+* $x$: Número de éxitos observados que queremos evaluar ($x \in \{0, 1, \dots, n\}$).</p>
+</div>
+<div class="paragraph">
+<p>p_X(x) = \binom{n}{x} p^x (1 - p)^{n-x}</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Media</strong>: $E[X] = np$</p>
+</li>
+<li>
+<p><strong>Varianza</strong>: $V(X) = np(1-p)$</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="distribución-geométrica-geomp"><a class="anchor" href="#distribución-geométrica-geomp"></a>Distribución Geométrica ($Geom(p)$)</h3>
+<div class="paragraph">
+<p>Describe el número de fallos necesarios antes de observar el primer éxito. Es un modelo clave para el análisis de tiempos de espera en sistemas discretos.</p>
+</div>
+<div class="paragraph">
+<p><strong>Variables del modelo:</strong>
+* $p$: Probabilidad de éxito en cada intento.
+* $x$: Número de fallos observados antes del primer éxito ($x \in \{0, 1, 2, \dots\}$).</p>
+</div>
+<div class="paragraph">
+<p>p_X(x) = (1 - p)^x p</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Media</strong>: $E[X] = \frac{1-p}{p}$</p>
+</li>
+<li>
+<p><strong>Varianza</strong>: $V(X) = \frac{1-p}{p^2}$</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="distribución-hipergeométrica-hiperd-n-n"><a class="anchor" href="#distribución-hipergeométrica-hiperd-n-n"></a>Distribución Hipergeométrica ($Hiper(D, N, n)$)</h3>
+<div class="paragraph">
+<p>A diferencia de la Binomial, modela el muestreo <strong>sin reemplazamiento</strong> de una población finita.</p>
+</div>
+<div class="paragraph">
+<p><strong>Variables del modelo:</strong>
+* $N$: Tamaño total de la población.
+* $D$: Número de elementos en la población que tienen la característica de interés (éxitos).
+* $n$: Tamaño de la muestra extraída.
+* $x$: Número de éxitos observados en la muestra.</p>
+</div>
+<div class="paragraph">
+<p>p_X(x) = \frac{\binom{D}{x} \binom{N-D}{n-x}}{\binom{N}{n}}</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Media</strong>: $E[X] = \frac{Dn}{N}$</p>
+</li>
+<li>
+<p><strong>Varianza</strong>: $V(X) = \frac{D(N-D)n(N-n)}{N^2(N-1)}$</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="distribución-binomial-negativa-bnn-p"><a class="anchor" href="#distribución-binomial-negativa-bnn-p"></a>Distribución Binomial Negativa ($BN(n, p)$)</h3>
+<div class="paragraph">
+<p>Analiza el número de fallos ($x$) antes de alcanzar el éxito $n$-ésimo.</p>
+</div>
+<div class="paragraph">
+<p><strong>Variables del modelo:</strong>
+* $n$: Número de éxitos objetivo que queremos alcanzar.
+* $p$: Probabilidad de éxito en un solo intento.
+* $x$: Número de fallos acumulados antes de llegar al $n$-ésimo éxito.</p>
+</div>
+<div class="paragraph">
+<p>p_X(x) = \binom{n+x-1}{n-1} (1-p)^x p^n</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="distribuciones-continuas"><a class="anchor" href="#distribuciones-continuas"></a>Distribuciones Continuas</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Asociadas a variables que pueden tomar cualquier valor en un rango real (tiempo, peso, altura, espacios latentes).</p>
+</div>
+<div class="sect2">
+<h3 id="distribución-normal-mathcalnmu-sigma2"><a class="anchor" href="#distribución-normal-mathcalnmu-sigma2"></a>Distribución Normal ($\mathcal{N}(\mu, \sigma^2)$)</h3>
+<div class="paragraph">
+<p>La piedra angular de la estadística moderna. La mayoría de las sumas de variables aleatorias convergen a esta distribución.</p>
+</div>
+<div class="paragraph">
+<p><strong>Variables del modelo:</strong>
+* $\mu$ (mu): La media o el centro de la distribución. Indica dónde está el pico de la campana.
+* $\sigma$ (sigma): La desviación estándar. Controla la dispersión o anchura de la campana.
+* $x$: El valor real a evaluar ($-\infty &lt; x &lt; \infty$).</p>
+</div>
+<div class="paragraph">
+<p>f_X(x) = \frac{1}{\sigma \sqrt{2\pi}} \exp\left\{-\frac{1}{2\sigma^2}(x - \mu)^2\right\}</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="distribución-beta-betaa-b"><a class="anchor" href="#distribución-beta-betaa-b"></a>Distribución Beta ($Beta(a, b)$)</h3>
+<div class="paragraph">
+<p>Se define en el intervalo $(0, 1)$, ideal para modelar probabilidades y proporciones en inferencia Bayesiana.</p>
+</div>
+<div class="paragraph">
+<p><strong>Variables del modelo:</strong>
+* $a$ ($\alpha$): Parámetro de forma 1. Tira de la masa de probabilidad hacia el 1.
+* $b$ ($\beta$): Parámetro de forma 2. Tira de la masa de probabilidad hacia el 0.</p>
+</div>
+<div class="paragraph">
+<p>f_X(x) = \frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)} x^{a-1} (1-x)^{b-1}</p>
+</div>
+<div class="paragraph">
+<p>Donde $\Gamma(p) = \int_{0}^{\infty} t^{p-1} e^{-t} dt$.
+* <strong>Media</strong>: $E[X] = \frac{a}{a+b}$
+* <strong>Varianza</strong>: $V(X) = \frac{ab}{(a+b)^2(a+b+1)}$</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="distribución-gamma-y-exponencial"><a class="anchor" href="#distribución-gamma-y-exponencial"></a>Distribución Gamma y Exponencial</h3>
+<div class="paragraph">
+<p>Habitual en el modelado de tiempos de supervivencia y tiempos de espera continuos.</p>
+</div>
+<div class="paragraph">
+<p><strong>Variables del modelo:</strong>
+* $a$ ($k$): Parámetro de forma. Determina el perfil de la curva.
+* $b$ ($\theta$): Parámetro de escala. Estira o comprime la distribución a lo largo del eje x.</p>
+</div>
+<div class="paragraph">
+<p>f_X(x) = \frac{1}{b^a \Gamma(a)} x^{a-1} e^{-x/b} \quad , \quad x &gt; 0</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Media</strong>: $E[X] = ab$</p>
+</li>
+<li>
+<p><strong>Varianza</strong>: $V(X) = ab^2$</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>El caso particular de <strong>$a = 1$</strong> se denomina <strong>Distribución Exponencial</strong>, con densidad $f(x) = \frac{1}{b} e^{-x/b}$. Su única variable suele denotarse como $\lambda = \frac{1}{b}$, que representa la tasa de ocurrencia.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="modelos-bidimensionales"><a class="anchor" href="#modelos-bidimensionales"></a>Modelos Bidimensionales</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="distribución-normal-bivariante"><a class="anchor" href="#distribución-normal-bivariante"></a>Distribución Normal Bivariante</h3>
+<div class="paragraph">
+<p>Describe el comportamiento conjunto de dos variables aleatorias $(X, Y)$ que están relacionadas.</p>
+</div>
+<div class="paragraph">
+<p><strong>Variables del modelo:</strong>
+* $\mu_1, \mu_2$: Las medias de las variables $X$ e $Y$.
+* $\sigma_1, \sigma_2$: Las desviaciones estándar de $X$ e $Y$.
+* $\rho$ (rho): El coeficiente de correlación entre ambas variables ($-1 \le \rho \le 1$).</p>
+</div>
+<div class="paragraph">
+<p>f(x, y) = \frac{1}{2\pi \sigma_1 \sigma_2 \sqrt{1 - \rho^2}} \exp \left\{ - \frac{1}{2(1 - \rho^2)} \left[ \frac{(x - \mu_1)^2}{\sigma_1^2} - \frac{2\rho(x - \mu_1)(y - \mu_2)}{\sigma_1 \sigma_2} + \frac{(y - \mu_2)^2}{\sigma_2^2} \right] \right\}</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Covarianza</strong>: $\mu_{11} = \rho \sigma_1 \sigma_2$</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="referencia-técnica-en-elixir"><a class="anchor" href="#referencia-técnica-en-elixir"></a>Referencia Técnica en Elixir</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>El ecosistema en Elixir se divide en la generación masiva de tensores para IA (<code>Nx</code>) y el cálculo analítico preciso (<code>Statistics</code>).</p>
+</div>
+<div class="sect2">
+<h3 id="1-muestreo-aleatorio-librería-nx-random"><a class="anchor" href="#1-muestreo-aleatorio-librería-nx-random"></a>1. Muestreo Aleatorio (Librería Nx.Random)</h3>
+<div class="paragraph">
+<p>Estas funciones generan <strong>tensores</strong> con valores aleatorios. Son esenciales para simulaciones de Monte Carlo, inicialización de pesos y redes neuronales bayesianas.</p>
+</div>
+<div class="paragraph">
+<p><strong>Variables comunes en Nx:</strong>
+* <code>key</code>: El estado del generador pseudoaleatorio (PRNG). Asegura que los experimentos sean reproducibles.
+* <code>opts</code> (generalmente <code>shape</code>): Define las dimensiones del tensor resultante (ej. <code>shape: {1000}</code> para un vector de mil elementos).</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 22.2222%;">
+<col style="width: 33.3333%;">
+<col style="width: 44.4445%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Modelo</th>
+<th class="tableblock halign-left valign-top">Función en Elixir</th>
+<th class="tableblock halign-left valign-top">Explicación de Parámetros Clave</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Binomial</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Nx.Random.binomial(key, n, p, opts)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>n</code>: Total de intentos por experimento. <code>p</code>: Probabilidad de éxito (0.0 a 1.0).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Normal</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Nx.Random.normal(key, mu, sigma, opts)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mu</code>: Centro de la campana. <code>sigma</code>: Nivel de ruido/dispersión.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Exponencial</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Nx.Random.exponential(key, opts)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No requiere parámetros extra; escala predeterminada a $1$.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Beta</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Nx.Random.beta(key, a, b, opts)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>a, b</code>: Controlan el sesgo de la curva entre 0 y 1.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Gamma</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Nx.Random.gamma(key, a, opts)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>a</code>: Controla la forma de la distribución asimétrica.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>t-Student</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Nx.Random.t(key, df, opts)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>df</code>: Grados de libertad (peso de las colas).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Ji-cuadrado</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Nx.Random.chisquare(key, df, opts)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>df</code>: Grados de libertad.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="2-cálculos-estadísticos-librería-statistics-distributions"><a class="anchor" href="#2-cálculos-estadísticos-librería-statistics-distributions"></a>2. Cálculos Estadísticos (Librería Statistics.Distributions)</h3>
+<div class="paragraph">
+<p>Cuando necesites el valor exacto de la curva (PDF) o la probabilidad acumulada (CDF), utilizas los módulos de <code>Statistics</code>. Estas funciones devuelven números escalares (<code>float</code>).</p>
+</div>
+<div class="paragraph">
+<p><strong>Explicación de las variables de función:</strong>
+* <strong><code>x</code></strong>: El valor empírico que estás evaluando (ej. "quiero saber la probabilidad de obtener exactamente un 5").
+* <strong><code>q</code></strong>: Una probabilidad o cuantil entre $0$ y $1$ (usado en <code>ppf</code>).</p>
+</div>
+<div class="paragraph">
+<p><strong>Las cuatro funciones nucleares por módulo:</strong>
+* <strong><code>pmf(x, &#8230;&#8203;)</code> / <code>pdf(x, &#8230;&#8203;)</code></strong>: Probabilidad de Masa (discreta) o Densidad (continua) en el punto exacto $x$.
+* <strong><code>cdf(x, &#8230;&#8203;)</code></strong>: Probabilidad Acumulada. Es el área bajo la curva desde $-\infty$ hasta $x$.
+* <strong><code>ppf(q, &#8230;&#8203;)</code></strong>: Función de Punto Porcentual (Inversa). Dada una probabilidad acumulada $q$, devuelve el valor $x$ correspondiente.
+* <strong><code>rand(&#8230;&#8203;)</code></strong>: Generación de una muestra única (no recomendado para IA masiva, usar Nx en su lugar).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-elixir hljs" data-lang="elixir">alias Statistics.Distributions.Normal
+alias Statistics.Distributions.Binomial
+
+# Probabilidad acumulada (CDF)
+# ¿Probabilidad de que una variable Normal(mu=0, sigma=1) sea menor a 1.96?
+# Resultado: ~0.975 (Intervalo de confianza del 95%)
+Normal.cdf(1.96, 0, 1)
+
+# Probabilidad de masa (PMF)
+# ¿Probabilidad de tener exactamente x=5 éxitos en n=10 intentos con p=0.5?
+Binomial.pmf(5, 10, 0.5)
+
+# Función inversa (PPF)
+# ¿Qué valor 'x' concentra el 95% de la probabilidad a su izquierda en una Normal estándar?
+Normal.ppf(0.95, 0, 1) # Resultado: ~1.644</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="3-tabla-de-referencia-de-módulos-cálculo-analítico"><a class="anchor" href="#3-tabla-de-referencia-de-módulos-cálculo-analítico"></a>3. Tabla de Referencia de Módulos (Cálculo Analítico)</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 40%;">
+<col style="width: 60%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Modelo</th>
+<th class="tableblock halign-left valign-top">Módulo en Statistics (Ejemplo de uso de pdf/pmf)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Poisson</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Statistics.Distributions.Poisson.pmf(x, lambda)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Exponencial</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Statistics.Distributions.Exponential.pdf(x, lambda)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Beta</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Statistics.Distributions.Beta.pdf(x, alpha, beta)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Gamma</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Statistics.Distributions.Gamma.pdf(x, k, theta)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>F-Snedecor</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Statistics.Distributions.F.pdf(x, d1, d2)</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>¿Cómo elegir cuál usar?</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Usa <strong>Nx.Random</strong> si estás entrenando una Red Neuronal, creando un Agente de IA que toma decisiones estocásticas, añadiendo ruido a un espacio latente, o haciendo simulaciones masivas en GPU.</p>
+</li>
+<li>
+<p>Usa <strong>Statistics.Distributions</strong> si estás haciendo análisis de datos exploratorio, validando hipótesis estadísticas teóricas (cálculo de p-values) o programando la función de pérdida matemática de un modelo.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="estadistica-descriptiva.html">Estadística Descriptiva</a></span>
+  <span class="next"><a href="inferencia-estadistica.html">Inferencia Estadística</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script src="../_/js/vendor/lunr.js"></script>
+<script src="../_/js/search-ui.js" id="search-ui-script" data-site-root-path=".." data-snippet-length="100" data-stylesheet="../_/css/search.css"></script>
+<script async src="../search-index.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      ignoreHtmlClass: 'nostem|no-mathjax'
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  </body>
+</html>

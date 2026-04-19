@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Observando el Orden de la Naturaleza: Estadística Descriptiva :: Elixir ML &amp; LLM</title>
+    <link rel="canonical" href="https://elixircl.github.io/elixir-ml/matematica/estadistica-descriptiva.html">
+    <link rel="prev" href="algebra-lineal.html">
+    <link rel="next" href="modelos-probabilisticos.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/js/vendor/styles/monokai.css">  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://elixircl.github.io/elixir-ml">Elixir ML &amp; LLM</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Buscar">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+    -->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">Elixir ML &amp; LLM</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Programación Agéntica</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../agentic/introduction.html">Introducción a la Programación Agéntica</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../agentic/que-es-un-agente.html">¿Qué es un agente?</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../agentic/peas.html">PEAS: Descripción de Tareas</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../agentic/instalar-elixir-vscode.html">Configurar VSCode con Elixir y OpenCode</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Apéndice: Matemática</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="logica-proposicional.html">Lógica Proposicional</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="algebra-lineal.html">Álgebra Lineal</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="estadistica-descriptiva.html">Estadística Descriptiva</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="modelos-probabilisticos.html">Modelos Probabilísticos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="inferencia-estadistica.html">Inferencia Estadística</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Elixir ML &amp; LLM</span>
+    <span class="version"></span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">Elixir ML & LLM</a></div>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Elixir ML & LLM</a></li>
+    <li>Apéndice: Matemática</li>
+    <li><a href="estadistica-descriptiva.html">Estadística Descriptiva</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="file:///C:/Users/USER/Documents/Apuntes_Elixir_Libro/elixir-ml/./modules/matematica/pages/estadistica-descriptiva.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contenidos" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Observando el Orden de la Naturaleza: Estadística Descriptiva</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Para cualquier observador de la naturaleza, los datos en bruto son simplemente una multitud desordenada. La estadística descriptiva es la maravillosa herramienta que nos permite imponer claridad en ese aparente caos, extrayendo las armonías fundamentales de un conjunto de muestras sin aventurarnos todavía en el terreno de las suposiciones. Se trata, simplemente, de observar la realidad tal cual es.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="medidas-de-tendencia-central"><a class="anchor" href="#medidas-de-tendencia-central"></a>Medidas de Tendencia Central</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Antes de analizar sistemas complejos, debemos localizar el punto de equilibrio donde la distribución parece descansar.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Media Aritmética ($\bar{x}$)</strong>: Representa el centro de gravedad de nuestros datos. Es el valor que esperaríamos encontrar bajo condiciones de perfecta uniformidad, aunque debemos tener cuidado, pues es sensible a valores extremos que pueden distorsionar la imagen de la realidad.</p>
+</li>
+</ol>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="paragraph">
+<p>\bar{x} = \frac{1}{n} \sum_{i=1}^n x_i</p>
+</div>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Mediana</strong>: Es el valor que divide nuestro conjunto de datos exactamente a la mitad. A diferencia de la media, posee una notable robustez; no se deja engañar fácilmente por el ruido o los valores anómalos.</p>
+</li>
+<li>
+<p><strong>Media Ponderada</strong>: Es necesaria cuando, por la naturaleza de nuestro experimento, decidimos otorgar distinta relevancia o "peso" a cada una de nuestras observaciones.</p>
+</li>
+</ol>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="paragraph">
+<p>\bar{x}_w = \frac{\sum w_i x_i}{\sum w_i}</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="medidas-de-dispersión-la-amplitud-de-la-variación"><a class="anchor" href="#medidas-de-dispersión-la-amplitud-de-la-variación"></a>Medidas de Dispersión: La Amplitud de la Variación</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Conocer el centro es solo el comienzo; ahora debemos cuantificar cuánto se alejan los datos de ese punto medio, tal como mediríamos la dispersión de la luz en un prisma.</p>
+</div>
+<div class="sect2">
+<h3 id="varianza-sigma2-y-desviación-estándar-sigma"><a class="anchor" href="#varianza-sigma2-y-desviación-estándar-sigma"></a>Varianza ($\sigma^2$) y Desviación Estándar ($\sigma$)</h3>
+<div class="paragraph">
+<p>La varianza nos da una medida del alejamiento al cuadrado. Sin embargo, para que nuestro análisis sea coherente con las unidades de medida que estamos observando, preferimos usar la desviación estándar. Es el indicador fundamental de la precisión y consistencia de nuestra muestra.</p>
+</div>
+<div class="openblock stem">
+<div class="content">
+<div class="paragraph">
+<p>\sigma^2 = \frac{1}{n} \sum_{i=1}^n (x_i - \bar{x})^2</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="rango-intercuartílico-iqr"><a class="anchor" href="#rango-intercuartílico-iqr"></a>Rango Intercuartílico (IQR)</h3>
+<div class="paragraph">
+<p>Esta medida se concentra en la zona de mayor densidad, ignorando los extremos. Es nuestra base más firme para determinar qué puntos son simples anomalías que no pertenecen al patrón principal.</p>
+</div>
+<div class="openblock stem">
+<div class="content">
+<div class="paragraph">
+<p>IQR = Q_3 - Q_1</p>
+</div>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Es una regla de observación muy útil considerar como "anómalo" (<strong>outlier</strong>) a cualquier valor que se sitúe fuera de estos límites: $[Q_1 - 1.5 \cdot IQR, Q_3 + 1.5 \cdot IQR]$. No es un capricho, sino una forma lógica de discernir el orden.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="la-forma-de-la-distribución"><a class="anchor" href="#la-forma-de-la-distribución"></a>La Forma de la Distribución</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Una vez que entendemos la ubicación y la dispersión, debemos contemplar la forma misma de nuestra "campana" de datos.</p>
+</div>
+<div class="sect2">
+<h3 id="coeficiente-de-asimetría-de-fisher-g_1"><a class="anchor" href="#coeficiente-de-asimetría-de-fisher-g_1"></a>Coeficiente de Asimetría de Fisher ($G_1$)</h3>
+<div class="paragraph">
+<p>Este coeficiente nos indica si la masa de nuestras observaciones se inclina hacia un lado u otro del espectro, rompiendo la simetría.</p>
+</div>
+<div class="openblock stem">
+<div class="content">
+<div class="paragraph">
+<p>G_1 = \frac{\frac{1}{n} \sum_{i=1}^n (x_i - \bar{x})<sup>3}{\sigma</sup>3}</p>
+</div>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>$G_1 = 0$</strong>: Una estructura perfectamente equilibrada y simétrica.</p>
+</li>
+<li>
+<p><strong>$G_1 &gt; 0$</strong>: Los datos muestran una "cola" que se estira hacia la derecha.</p>
+</li>
+<li>
+<p><strong>$G_1 &lt; 0$</strong>: La inclinación ocurre hacia la izquierda.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="relación-entre-variables-el-diálogo-de-los-datos"><a class="anchor" href="#relación-entre-variables-el-diálogo-de-los-datos"></a>Relación entre Variables: El Diálogo de los Datos</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Cuando observamos dos variables ($X$ e $Y$) al mismo tiempo, buscamos comprender la afinidad o dependencia que existe entre ellas.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Covarianza</strong>: Nos indica la dirección de esta relación. Si ambas crecen al unísono, o si una desciende mientras la otra se eleva.</p>
+</li>
+</ol>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="paragraph">
+<p>cov(X, Y) = \frac{1}{n} \sum (x_i - \bar{x})(y_i - \bar{y})</p>
+</div>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Coeficiente de Correlación de Pearson ($r$)</strong>: Es una escala preciosa que va del $-1$ al $1$, permitiéndonos ver qué tan fuerte es el vínculo lineal entre nuestras dos magnitudes estudiadas.</p>
+</li>
+</ol>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="paragraph">
+<p>r = \frac{cov(X, Y)}{\sigma_X \sigma_Y}</p>
+</div>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Siempre debemos recordar que una correlación fuerte no significa necesariamente que una cosa sea la causa de la otra. La naturaleza es compleja y a veces dos hilos se mueven juntos movidos por una misma mano invisible.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="el-arte-de-la-computación-con-nx-y-scholar"><a class="anchor" href="#el-arte-de-la-computación-con-nx-y-scholar"></a>El Arte de la Computación con Nx y Scholar</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>En nuestras modernas máquinas, herramientas como <strong>Nx</strong> nos permiten realizar estos cálculos con una velocidad que parecería magia a nuestros antecesores.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-elixir hljs" data-lang="elixir">import Nx
+alias Scholar.Stats
+
+# Observamos un conjunto de datos
+data = Nx.tensor([10, 12, 23, 23, 16, 23, 21, 16])
+
+# Calculamos el centro y la dispersión
+media = Nx.mean(data)
+mediana = Stats.median(data)
+varianza = Nx.variance(data)</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Al igual que las leyes de la física funcionan para todas las partículas, <code>Nx</code> puede aplicar estos cálculos a miles de datos de forma simultánea usando la potencia de la GPU. ¡Es un espectáculo digno de contemplar!</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="algebra-lineal.html">Álgebra Lineal</a></span>
+  <span class="next"><a href="modelos-probabilisticos.html">Modelos Probabilísticos</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script src="../_/js/vendor/lunr.js"></script>
+<script src="../_/js/search-ui.js" id="search-ui-script" data-site-root-path=".." data-snippet-length="100" data-stylesheet="../_/css/search.css"></script>
+<script async src="../search-index.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      ignoreHtmlClass: 'nostem|no-mathjax'
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  </body>
+</html>
