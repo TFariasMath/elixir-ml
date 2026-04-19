@@ -20,6 +20,7 @@ asciidoc:
     - asciidoctor-kroki
     - "@djencks/asciidoctor-mathjax"
   attributes:
+    stem: mathjax
     kroki-fetch-diagram: true
     experimental: ""
     idprefix: ""

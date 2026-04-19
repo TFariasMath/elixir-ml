@@ -1,6 +1,6 @@
 = Modelos Probabilísticos
 :icons: font
-:math: mathjax
+:stem: mathjax
 
 En este capítulo exploraremos los modelos matemáticos que nos permiten cuantificar la incertidumbre. Estos modelos son la base de la inferencia estadística y del aprendizaje automático, permitiéndonos predecir comportamientos basándonos en leyes de probabilidad fundamentales. Comprender qué representa cada variable es vital para calibrar correctamente los algoritmos de IA.
 

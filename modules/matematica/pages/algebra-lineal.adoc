@@ -1,6 +1,6 @@
 = Álgebra Lineal y Cálculo de Tensores
 :icons: font
-:math: mathjax
+:stem: mathjax
 
 El álgebra lineal no es solo el estudio de tablas de números; es el marco mediante el cual entendemos cómo transformar y deformar espacios. Cuando añadimos el cálculo a esta mezcla, obtenemos las herramientas necesarias para optimizar funciones complejas en dimensiones masivas.
 

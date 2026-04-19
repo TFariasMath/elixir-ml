@@ -1,6 +1,6 @@
 = Lógica Proposicional
 :icons: font
-:math: mathjax
+:stem: mathjax
 
 Este apéndice establece los cimientos del razonamiento lógico, fundamentales tanto para la matemática pura como para la construcción de algoritmos y agentes de inteligencia artificial.
 

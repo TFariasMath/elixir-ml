@@ -1,6 +1,6 @@
 = Inferencia Estadística
 :icons: font
-:math: mathjax
+:stem: mathjax
 
 La inferencia estadística es el proceso de usar datos de una muestra para sacar conclusiones sobre la población de la que proviene. Se divide principalmente en **estimación por intervalos** (dar un rango de valores probables) y **contraste de hipótesis** (tomar decisiones basadas en evidencia).
 

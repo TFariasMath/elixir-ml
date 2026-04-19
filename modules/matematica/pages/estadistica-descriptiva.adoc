@@ -1,6 +1,6 @@
 = Estadística Descriptiva
 :icons: font
-:math: mathjax
+:stem: mathjax
 
 La estadística descriptiva es el conjunto de técnicas matemáticas utilizadas para resumir, organizar y caracterizar un conjunto de datos. Su objetivo no es realizar inferencias, sino describir "qué nos están diciendo los datos" mediante medidas cuantitativas y visualizaciones.
 
