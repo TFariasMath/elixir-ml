@@ -134,6 +134,120 @@
 </aside>
 <article class="doc">
 <h1 class="page">Introducción a la Programación Agéntica</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>La <strong>programación agéntica</strong> (o <em>agentic programming</em>) es un enfoque de desarrollo donde se crean <strong>agentes de software autónomos</strong>, normalmente impulsados por IA, capaces de <strong>tomar decisiones, aprender y ejecutar tareas por sí mismos</strong> en lugar de seguir únicamente instrucciones fijas.</p>
+</div>
+<div class="paragraph">
+<p>En vez de definir paso a paso "haz A → luego B → luego C", se diseña un agente con:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>objetivos</strong> (qué debe lograr)</p>
+</li>
+<li>
+<p><strong>herramientas</strong> (APIs, bases de datos, aplicaciones)</p>
+</li>
+<li>
+<p><strong>memoria</strong> (para recordar contexto)</p>
+</li>
+<li>
+<p><strong>capacidad de razonamiento</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>A partir de esto, el agente decide cómo actuar.</p>
+</div>
+<div class="paragraph">
+<p>En un programa tradicional, se sigue reglas exactas.
+Mientras que en un programa agéntico, se persigue objetivos y
+decide cómo alcanzarlos.</p>
+</div>
+<div class="paragraph">
+<p>Un agente puede, por ejemplo:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Leer y responder correos automáticamente</p>
+</li>
+<li>
+<p>Investigar información en internet</p>
+</li>
+<li>
+<p>Ejecutar código</p>
+</li>
+<li>
+<p>Coordinar tareas entre varias aplicaciones</p>
+</li>
+<li>
+<p>Aprender de interacciones pasadas</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Componentes típicos</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Modelo de lenguaje (LLM)</strong>: el “cerebro”</p>
+</li>
+<li>
+<p><strong>Memoria</strong>: corto y largo plazo</p>
+</li>
+<li>
+<p><strong>Planificación</strong>: divide tareas complejas</p>
+</li>
+<li>
+<p><strong>Herramientas</strong>: acciones en el mundo real (APIs, software)</p>
+</li>
+<li>
+<p><strong>Bucle de ejecución</strong>: observa → decide → actúa → aprende</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Ejemplo</strong>
+Le dices:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Organiza un viaje a Argentina barato</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Un sistema agéntico podría:
+. Buscar vuelos
+. Comparar precios
+. Revisar el clima
+. Sugerir fechas
+. Reservar (si tiene permisos)</p>
+</div>
+<div class="paragraph">
+<p>Sin necesidad de indicar cada paso manualmente.</p>
+</div>
+<div class="paragraph">
+<p>La programación agéntica representa un cambio importante:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>De <strong>software pasivo</strong> → a <strong>software que actúa por ti</strong></p>
+</li>
+<li>
+<p>De <strong>herramientas</strong> → a <strong>colaboradores digitales</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Es la base de asistentes avanzados, automatización inteligente y plataformas de agentes.</p>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="qué-es-un-token"><a class="anchor" href="#qué-es-un-token"></a>¿Qué es un Token?</h2>
 <div class="sectionbody">
@@ -160,7 +274,9 @@ En específico se puede ver la <a href="https://arena.ai/leaderboard/code">tabla
 cotizar en <a href="https://llm-price.com/">LLM Price</a>. Normalmente la comparación estándar
 es el valor por el millón de tokens generados. Se puede utilizar también la web
 de <a href="https://www.swebench.com/index.html">SWE Bench</a>, aunque sus valores no están
-muy actualizados y pueden variar.</p>
+muy actualizados y pueden variar. Una opción razonable es analizar los precios
+de <a href="https://cursor.com/es/docs/models-and-pricing">Cursor</a>, ya que la mayoría de las otras herramientas tendrán un valor similar y conforme avanza la tecnología modelos
+más nuevos abaratan los costos de los modelos anteriores.</p>
 </div>
 <div class="sect2">
 <h3 id="modelos-populares"><a class="anchor" href="#modelos-populares"></a>Modelos Populares</h3>
@@ -176,6 +292,9 @@ muy actualizados y pueden variar.</p>
 <p>Cursor</p>
 </li>
 <li>
+<p>Codex</p>
+</li>
+<li>
 <p>Sonnet</p>
 </li>
 <li>
@@ -184,11 +303,8 @@ muy actualizados y pueden variar.</p>
 </ul>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="se-puede-instalar-modelos-locales"><a class="anchor" href="#se-puede-instalar-modelos-locales"></a>¿Se puede instalar modelos locales?</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="se-puede-instalar-modelos-locales"><a class="anchor" href="#se-puede-instalar-modelos-locales"></a>¿Se puede instalar modelos locales?</h3>
 <div class="paragraph">
 <p>Si bien es posible comprar un computador potente como un <a href="https://www.elladodelmal.com/2024/12/como-montar-tu-propio-servidor-de.html">Mac Mini</a> (Una configuración mínima para poder ejecutar modelos decentes sería un Macbook Pro M4 con 32GB de RAM y 1TB de disco duro).
 e instalar un modelo local como <a href="https://ollama.com/">oLlama</a>, <a href="https://lmstudio.ai/">LMStudio</a> o <a href="https://pinokio.co/">Pinokio</a>. Para simular las capacidades de cómputo de un modelo de subscripción como <a href="https://www.anthropic.com/claude/opus">Opus 4.6</a> se necesitaría una inversión
@@ -200,6 +316,7 @@ de producción y uso profesional es más recomendable las herramientas
 de subscripción disponibles o por lo menos un híbrido entre opciones locales y la nube.</p>
 </div>
 <iframe width="100%" height="515" src="https://www.youtube.com/embed/GBR6pHZ68Ho?si=ZwYlUv5FLrsumKzY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 <div class="sect2">
 <h3 id="ollama-lmstudio-pinokio"><a class="anchor" href="#ollama-lmstudio-pinokio"></a>OLlama, LMStudio, Pinokio</h3>
 <div class="paragraph">
@@ -213,8 +330,50 @@ de subscripción disponibles o por lo menos un híbrido entre opciones locales y
 </div>
 </div>
 <div class="sect2">
-<h3 id="hermes-openclaw"><a class="anchor" href="#hermes-openclaw"></a>Hermes, OpenClaw</h3>
-
+<h3 id="hermes-agent-openclaw-opencode"><a class="anchor" href="#hermes-agent-openclaw-opencode"></a>Hermes Agent, OpenClaw, OpenCode</h3>
+<div class="paragraph">
+<p><a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a>, <a href="https://opencode.ai/">OpenCode</a> y <a href="https://github.com/openclaw/openclaw">OpenClaw</a> son dos herramientas que permiten dar un contexto persistente a los modelos
+de LLM. Herramientas como <em>Claude Code</em>, <em>Codex</em> y <em>Cursor</em> son potentes dentro de una sesión, pero tienen un contexto limitado entre sesiones.</p>
+</div>
+<div class="paragraph">
+<p><strong>OpenClaw</strong></p>
+</div>
+<div class="paragraph">
+<p><em>OpenClaw</em> nació a finales del 2025 y resolvió un problema que los desarrolladores llevaban tiempo esperando que alguien solucionara. Les ofreció un agente de IA autoalojado que se conecta a las aplicaciones de mensajería que ya usan: WhatsApp, Telegram, Slack, Discord, Signal y más de 50 integraciones adicionales. Funciona con todos los principales proveedores de modelos: Anthropic, OpenAI, Google y modelos locales a través de <em>Ollama</em>. El ecosistema creció hasta incluir <a href="https://clawhub.ai/">ClawHub</a>, un registro público de habilidades con miles de habilidades creadas por la comunidad, múltiples proveedores de hosting gestionado y aplicaciones complementarias para macOS e iOS.</p>
+</div>
+<div class="paragraph">
+<p><strong>Hermes Agent</strong></p>
+</div>
+<div class="paragraph">
+<p><em>Hermes Agent</em> se lanzó en febrero de 2026 por Nous Research, el laboratorio detrás de las familias de modelos Hermes, Nomos y Psyche.</p>
+</div>
+<div class="paragraph">
+<p>Mientras <em>OpenClaw</em> se centró en la amplitud de las integraciones, Hermes Agent se enfocó en la profundidad del aprendizaje. El eslogan del proyecto, “el agente que crece contigo”, describe una arquitectura construida alrededor de un ciclo de aprendizaje cerrado. Tres componentes hacen que este ciclo funcione.</p>
+</div>
+<div class="paragraph">
+<p>Primero, memoria persistente. Hermes utiliza búsqueda de texto completo FTS5 sobre todas las sesiones pasadas almacenadas en SQLite, combinada con resúmenes generados por LLM. El agente puede recordar conversaciones de semanas atrás, buscar en su propio historial y construir una comprensión más profunda de quién eres y cómo trabajas. Esto no es un archivo <em>CLAUDE.md</em> que mantienes tú mismo. El agente gestiona su propia memoria con ajustes periódicos.</p>
+</div>
+<div class="paragraph">
+<p>Segundo, creación autónoma de habilidades. Después de completar tareas complejas, el agente puede escribir un documento estructurado de habilidades que registra los procedimientos, los posibles errores y los pasos de verificación que descubrió.</p>
+</div>
+<div class="paragraph">
+<p>La próxima vez que surja una tarea similar, carga la habilidad en lugar de resolver el problema desde cero. Las habilidades siguen el estándar abierto <a href="https://agentskills.io/home">agentskills.io</a>, lo que las hace portables entre plataformas compatibles.</p>
+</div>
+<div class="paragraph">
+<p><strong>OpenCode</strong></p>
+</div>
+<div class="paragraph">
+<p>OpenCode es un agente de código de código abierto diseñado para la terminal que te permite programar con IA directamente desde la línea de comandos. A diferencia de otras herramientas cerradas, OpenCode funciona como un binario único sin dependencias y destaca por su sistema de agentes, habilidades (skills) y comandos personalizados.</p>
+</div>
+<div class="paragraph">
+<p>OpenCode no se limita a responder preguntas; te permite crear comandos personalizados para tareas repetitivas (como ejecutar tests o crear PRDs) y agentes especializados para roles específicos (como un arquitecto de seguridad o un experto en documentación).</p>
+</div>
+<div class="paragraph">
+<p><strong>Mirada Hacia el Futuro</strong></p>
+</div>
+<div class="paragraph">
+<p><em>OpenClaw</em>, <em>OpenCode</em> y <em>Hermes Agent</em> se entienden mejor como dos prototipos tempranos e influyentes de infraestructura de agentes persistentes. Uno prioriza el ecosistema. El otro prioriza el ciclo de aprendizaje. Ninguno es un producto terminado, pero ambos apuntan hacia un futuro en el que los agentes de IA funcionen como servicios de larga duración en lugar de asistentes limitados a una sesión.</p>
+</div>
 </div>
 </div>
 </div>
@@ -225,6 +384,12 @@ de subscripción disponibles o por lo menos un híbrido entre opciones locales y
 <ul>
 <li>
 <p><a href="https://www.elladodelmal.com/2024/12/como-montar-tu-propio-servidor-de.html" class="bare">https://www.elladodelmal.com/2024/12/como-montar-tu-propio-servidor-de.html</a></p>
+</li>
+<li>
+<p><a href="https://thenewstack.io/persistent-ai-agents-compared/" class="bare">https://thenewstack.io/persistent-ai-agents-compared/</a></p>
+</li>
+<li>
+<p><a href="https://dev.to/kevinl/opencode-your-empowered-agent-for-the-terminal-10" class="bare">https://dev.to/kevinl/opencode-your-empowered-agent-for-the-terminal-10</a></p>
 </li>
 </ul>
 </div>
@@ -247,5 +412,19 @@ de subscripción disponibles o por lo menos un híbrido entre opciones locales y
 <script src="../_/js/vendor/lunr.js"></script>
 <script src="../_/js/search-ui.js" id="search-ui-script" data-site-root-path=".." data-snippet-length="100" data-stylesheet="../_/css/search.css"></script>
 <script async src="../search-index.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      ignoreHtmlClass: 'nostem|no-mathjax'
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
   </body>
 </html>
