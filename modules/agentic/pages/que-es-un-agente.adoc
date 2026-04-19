@@ -1,0 +1,59 @@
+= La Esencia de la Acción: ¿Qué es un Agente?
+:icons: font
+:stem: mathjax
+
+En el vasto teatro de la computación, un **agente** no es simplemente un conjunto de líneas de código que esperan ser ejecutadas. Es, en su definición más pura, cualquier entidad que **percibe** su entorno y **actúa** sobre él. Como un artesano que observa la madera antes de tallarla, el agente utiliza sus **sensores** para recibir información y sus **actuadores** para transformar la realidad.
+
+== El Diálogo con el Entorno
+
+Para entender a un agente, debemos observar su conversación continua con el mundo. A cada fragmento de información que sus sensores capturan lo llamamos **percepto**. A lo largo de su existencia, el agente acumula una **secuencia de perceptos**, un historial que define todo lo que ha conocido hasta el momento presente.
+
+[NOTE]
+====
+La identidad de un agente reside en su **función**. Matemáticamente, es el mapa que asocia cada posible secuencia de perceptos con una acción. Su **programa**, por otro lado, es la encarnación física de esa función: el motor que corre sobre la arquitectura.
+====
+
+[.text-center]
+[mermaid]
+....
+graph LR
+    E((Entorno)) -- Perceptos --> S[Sensores]
+    S -- Historial --> A{Agente}
+    A -- Decisión --> Ac[Actuadores]
+    Ac -- Acciones --> E
+....
+
+== El Ideal de la Racionalidad
+
+No nos conformamos con agentes que simplemente actúen; buscamos la **racionalidad**. Ser racional no implica ser perfecto, sino actuar con propósito. Un agente es racional si, basándose en lo que ha percibido y en el conocimiento que ya posee, selecciona la acción que **maximiza su medida de desempeño**.
+
+[IMPORTANT]
+====
+La racionalidad es hija de la medida de éxito que le otorgamos. Si definimos mal el objetivo, el agente será "estúpidamente racional", alcanzando metas absurdas con una eficiencia impecable.
+====
+
+== La Capacidad de Aprender
+
+Un agente que no varía su proceder ante un mundo cambiante es poco más que un autómata. El **aprendizaje** es la facultad de elevar el desempeño tras observar los resultados de sus propios actos. Es el proceso de ajustar sus mecanismos internos para que sus acciones futuras armonicen mejor con lo que el mundo le ha enseñado.
+
+*   **Aprendizaje Supervisado**: Como un aprendiz que sigue los pasos de un maestro, el agente recibe ejemplos de "entrada y salida" para aprender a generalizar.
+*   **Aprendizaje por Refuerzo**: Es la escuela de la experiencia pura; el agente recibe recompensas o castigos y debe descubrir por sí mismo qué camino le lleva a la gloria acumulada.
+*   **Aprendizaje No Supervisado**: El agente busca patrones ocultos y armonías en los datos sin que nadie le diga qué está buscando.
+
+[TIP]
+====
+En su búsqueda de la verdad, el agente racional debe abrazar la **Navaja de Ockham**: ante dos explicaciones que expliquen igual de bien lo observado, la más sencilla suele ser la que refleja la verdadera naturaleza del mundo.
+====
+
+== Las Cuatro Visiones de la Inteligencia
+
+A lo largo de la historia, hemos intentado definir la Inteligencia Artificial a través de cuatro cristales distintos, dependiendo de si buscamos imitar la humanidad o alcanzar la razón pura:
+
+[cols="1,1", options="header"]
+|===
+| Enfoque | Descripción
+| **Actuar como Humanos** | El sueño de Alan Turing. El sistema debe ser indistinguible de nosotros en una conversación (Test de Turing).
+| **Pensar como Humanos** | El camino de la Ciencia Cognitiva. No basta el resultado; queremos que los procesos internos imiten la mente humana.
+| **Pensar Racionalmente** | La tradición logicista. El uso de silogismos y lógica formal para garantizar que cada paso sea una verdad irrefutable.
+| **Actuar Racionalmente** | El enfoque del Agente Racional. Hacer "lo correcto" para maximizar el éxito, incluso cuando el tiempo no permite un razonamiento perfecto.
+|===

@@ -1,3 +1,5 @@
 .Programación Agéntica
 * xref:introduction.adoc[]
+* xref:que-es-un-agente.adoc[¿Qué es un agente?]
+* xref:peas.adoc[PEAS: Descripción de Tareas]
 * xref:instalar-elixir-vscode.adoc[Configurar VSCode con Elixir y OpenCode]

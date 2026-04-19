@@ -1,0 +1,74 @@
+Para diseñar un agente inteligente con éxito, el primer paso fundamental es especificar su entorno de tarea de la manera más completa posible
+. En la literatura técnica, este proceso se formaliza mediante el modelo PEAS, un acrónimo que agrupa los cuatro elementos críticos que definen el problema que el agente debe resolver: la medida de Rendimiento (Performance), el Entorno (Environment), los Actuadores (Actuators) y los Sensores (Sensors)
+.
+A continuación, se detalla cada componente utilizando el ejemplo clásico de un taxista autónomo para ilustrar su aplicación práctica:
+1. Rendimiento (Performance)
+La medida de rendimiento constituye el criterio de éxito del agente; es la norma según la cual se evalúa su comportamiento
+. Es vital diseñar esta medida en función de lo que se desea alcanzar en el entorno y no de cómo se espera que el agente se comporte
+.
+= La Anatomía del Deber: El Marco PEAS
+:icons: font
+
+Para que un agente actúe con sabiduría, primero debemos definir con precisión quirúrgica cuál es su misión. El marco **PEAS** (Performance, Environment, Actuators, Sensors) es la brújula que nos permite describir los límites y objetivos de cualquier sistema inteligente.
+
+== Los Cuatro Pilares del Diseño
+
+Al enfrentarnos al diseño de un nuevo agente, debemos responder a cuatro preguntas fundamentales que definirán su existencia:
+
+1.  **Medida de Desempeño** (*Performance*): Es el árbitro del éxito. ¿Bajo qué vara mediremos si el agente ha triunfado o ha fracasado en su encargo?
+2.  **Entorno** (*Environment*): Es el escenario donde ocurre la acción. ¿Qué elementos externos dictan las reglas del juego?
+3.  **Actuadores** (*Actuators*): Son las manos del agente. ¿Qué medios posee para alterar el estado del mundo?
+4.  **Sensores** (*Sensors*): Son los ojos y oídos. ¿Cómo percibe la realidad antes de tomar una decisión?
+
+[IMPORTANT]
+====
+La medida de desempeño debe ser externa. Si permitimos que el agente defina su propio éxito, es probable que encuentre un "atajo" para sentirse satisfecho sin haber cumplido su tarea real.
+====
+
+== Muestrario de Entornos de Tareas
+
+Observemos cómo se descompone la realidad de diferentes agentes bajo este marco:
+
+[cols="1,1,1,1,1", options="header"]
+|===
+| Tipo de Agente | Desempeño | Entorno | Actuadores | Sensores
+
+| **Taxi Autónomo**
+| Seguridad, velocidad, legalidad, ahorro.
+| Rutas, tráfico, peatones, clima variable.
+| Volante, acelerador, freno, claxon.
+| Cámaras, LIDAR, GPS, odómetro.
+
+| **Sistema médico**
+| Salud del paciente, costos, precisión.
+| Paciente, hospital, historial.
+| Pantalla con diagnósticos y alertas.
+| Teclado, entrada de síntomas.
+
+| **Clasificador de Piezas**
+| Rapidez, precisión en la caja correcta.
+| Cinta transportadora, piezas.
+| Brazo robótico, pinza neumática.
+| Cámaras, sensores de peso.
+
+| **Scribe Docs (IA)**
+| Claridad, estructura, veracidad.
+| Archivos fuente, código, usuario.
+| Generación de archivos `.adoc`.
+| Lectura de archivos, feedback.
+|===
+
+== Propiedades del Mundo
+
+No todos los escenarios son igualmente amables. La complejidad de un agente nace, en gran medida, de la naturaleza de su entorno:
+
+*   **¿Se ve todo?** (Totalmente vs. Parcialmente observable).
+*   **¿Es predecible?** (Determinista vs. Estocástico).
+*   **¿Es un hecho aislado?** (Episódico vs. Secuencial).
+*   **¿Se detiene el tiempo?** (Estático vs. Dinámico).
+*   **¿Hay otros?** (Agente individual vs. Multi-agente).
+
+[TIP]
+====
+Diseñar un agente para un mundo **parcialmente observable** y **estocástico** es el mayor de los retos: el agente debe actuar en la niebla y bajo la incertidumbre del azar.
+====
