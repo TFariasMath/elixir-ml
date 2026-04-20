@@ -4,24 +4,30 @@
 
 Advertencia: El siguiente documento sacrifica rigurosidad matematica para hacer mas accesible su contenido. 
 
-Un sistema de n ecuaciones lineales y m incognitas x_1, ...., x_m, se escribe de la forma
-
-a_11x_1 + a_12x_2 + ... + a_1mx_m = b_1
-a_21x_1 + a_22x_2 + ... + a_2mx_m = b_2
-......................................
-a_n1x_1 + a_n2x_2 + ... + a_nmx_m = b_n
-donde los numeros a_ij y b_i son conocidos.
-
-Se denotara como "sistema n x m" para refernis a un sistema de n ecuaciones lineales con m incognitas.
-
-Dado un sistema de n ecuaciones lineales con m incognitas, se dice que (x_1,x_2,...,x_m) es una solucion del sistema, si satisface cada una de las n ecuaciones. Al conjunto de todas las soluciones posibles de un sistema se le va a denominar conjunto solucion del sistema.
-
-Por ejemplo, imagina que estamos tratando de predecir el precio de una suscripción basándonos en dos factores: el número de usuarios ($x_1$) y el almacenamiento extra ($x_2$). Podríamos tener un sistema como este:
+Un sistema de stem:[n] ecuaciones lineales con stem:[m] incógnitas stem:[x_1, \dots, x_m] se expresa formalmente como:
 
 [stem]
 --
-2x_1 + 1x_2 = 15 \\
-1x_1 + 3x_2 = 20
+\begin{aligned}
+a_{11}x_1 + a_{12}x_2 + \dots + a_{1m}x_m &= b_1 \\
+a_{21}x_1 + a_{22}x_2 + \dots + a_{2m}x_m &= b_2 \\
+&\vdots \\
+a_{n1}x_1 + a_{n2}x_2 + \dots + a_{nm}x_m &= b_n
+\end{aligned}
+--
+
+Donde los coeficientes stem:[a_{ij}] y los términos independientes stem:[b_i] son valores conocidos que definen la estructura del problema.
+
+Se denomina **"sistema stem:[n \times m]"** a esta configuración. Resolverlo implica encontrar un vector stem:[\mathbf{x} = (x_1, x_2, \dots, x_m)] que satisfaga simultáneamente cada una de las stem:[n] igualdades. El conjunto de todas estas soluciones posibles constituye el **espacio solución**.
+
+Por ejemplo, si buscamos predecir el precio de una suscripción basándonos en el número de usuarios (stem:[x_1]) y el almacenamiento extra (stem:[x_2]), nos enfrentaríamos a una composición geométrica como esta:
+
+[stem]
+--
+\begin{cases}
+2x_1 + x_2 = 15 \\
+x_1 + 3x_2 = 20
+\end{cases}
 --
 
 En **Elixir**, usando la librería **Nx**, representaríamos los coeficientes y los resultados como tensores independientes:
@@ -53,12 +59,24 @@ fila_1 = a[0]
 fila_1_escalada = Nx.multiply(fila_1, 2)
 ----
 
-En un sistema nx m 
+Esta arquitectura de coeficientes no es una simple lista; es una entidad rectangular que encapsula la transformación completa:
 
-a_11x_1 + a_12x_2 + ... + a_1mx_m = b_1
-a_21x_1 + a_22x_2 + ... + a_2mx_m = b_2
-......................................
-a_n1x_1 + a_n2x_2 + ... + a_nmx_m = b_n
+[stem]
+--
+\begin{pmatrix}
+a_{11}x_1 + a_{12}x_2 + \dots + a_{1m}x_m \\
+a_{21}x_1 + a_{22}x_2 + \dots + a_{2m}x_m \\
+\vdots \\
+a_{n1}x_1 + a_{n2}x_2 + \dots + a_{nm}x_m
+\end{pmatrix}
+=
+\begin{pmatrix}
+b_1 \\
+b_2 \\
+\vdots \\
+b_n
+\end{pmatrix}
+--
 
 
 Esta estructura rectangular representa una entidad propia, mucho más allá de ser una simple convención de escritura. En matemáticas, la representamos así:
@@ -131,7 +149,7 @@ Multiplicar dos matrices ($A \cdot B$) no es multiplicar elemento a producto. Es
 
 [IMPORTANT]
 ====
-El orden importa: $A \cdot B \neq B \cdot A$. En el mundo de las transformaciones, no es lo mismo girar y luego mover, que mover y luego girar.
+El orden de los factores altera el producto: stem:[A \cdot B \neq B \cdot A]. En el mundo de las transformaciones, no es equivalente rotar y luego trasladar, que trasladar y luego rotar.
 ====
 
 [source, elixir]
@@ -154,11 +172,14 @@ Si la linealidad nos dice *cómo* cambian las cosas, necesitamos entender *con q
 
 
 
-* *Combinación Lineal:* Es la operación constructiva por excelencia. Consiste en tomar un conjunto de vectores, "estirarlos" o "encogerlos" (multiplicarlos por un escalar) y sumarlos. Matemáticamente, un vector $\vec{w}$ es una combinación lineal de otros vectores si puede expresarse como:
+* *Combinación Lineal:* Es la operación constructiva por excelencia. Consiste en tomar un conjunto de vectores, "estirarlos" o "encogerlos" (multiplicarlos por un escalar) y sumarlos. Matemáticamente, un vector stem:[\mathbf{w}] es una combinación lineal de otros vectores si puede expresarse como:
 +
-$$\vec{w} = c_1\vec{v}_1 + c_2\vec{v}_2 + \dots + c_n\vec{v}_n$$
+[stem]
+--
+\mathbf{w} = c_1\mathbf{v}_1 + c_2\mathbf{v}_2 + \dots + c_n\mathbf{v}_n
+--
 +
-(donde las $c$ representan números escalares).
+(donde las stem:[c_i] representan coeficientes escalares).
 
 * *Espacio Generado (Span):* Imagina dos vectores que apuntan en direcciones distintas. Si calculas absolutamente *todas* sus combinaciones lineales posibles, obtendrás un plano infinito. Ese conjunto de todos los destinos posibles a los que puedes llegar combinando tus vectores se llama espacio generado.
 
@@ -175,13 +196,13 @@ Pensar en términos de combinaciones y bases es crucial. Cuando entrenamos una r
 
 Ahora que entendemos cómo se estructuran y combinan los elementos dentro de un espacio, podemos organizar las "colecciones de información" que lo habitan. Un tensor es, en su forma más pura, un objeto matemático multilineal definido por su rango. 
 
-[cols="1,1,2", options="header"]
+[cols="^1,^1,2", options="header"]
 |===
-| Rango | Nombre | Significado Geométrico
-| 0 | Escalar ($k$) | Magnitud pura en un punto.
-| 1 | Vector ($\vec{v}$) | Dirección y magnitud en el espacio.
-| 2 | Matriz ($A$) | Transformación lineal entre espacios.
-| $n$ | Tensor de orden $n$ | Generalización multidimensional.
+| Rango (NDim) | Nombre | Significado Geométrico
+| 0 | **Escalar** (stem:[k]) | Magnitud pura en un punto sin dirección.
+| 1 | **Vector** (stem:[\mathbf{v}]) | Dirección y magnitud en el espacio.
+| 2 | **Matriz** (stem:[\mathbf{A}]) | Transformación lineal entre espacios.
+| stem:[n] | **Tensor** de orden stem:[n] | Generalización multidimensional de datos.
 |===
 
 [IMPORTANT]
@@ -193,8 +214,8 @@ En computación y ciencia de datos, el rango de un tensor se suele llamar su nú
 
 Dada una matriz $A$, esta define dos subespacios fundamentales:
 
-- **Imagen o Espacio Columna** ($Im(A)$): El conjunto de todos los vectores que pueden ser alcanzados por la transformación $A\vec{x}$. Su dimensión es el **rango** de la matriz.
-- **Kernel o Espacio Nulo** ($Ker(A)$): El conjunto de vectores $\vec{x}$ que $A$ "aplasta" hacia el cero ($A\vec{x} = \vec{0}$).
+- **Imagen o Espacio Columna** (stem:[\text{Im}(\mathbf{A})]): El conjunto de todos los vectores que pueden ser alcanzados por la transformación stem:[\mathbf{A}\mathbf{x}]. Su dimensión es el **rango** de la matriz.
+- **Kernel o Espacio Nulo** (stem:[\text{Ker}(\mathbf{A})]): El conjunto de vectores stem:[\mathbf{x}] que la matriz "colapsa" hacia el origen (stem:[\mathbf{A}\mathbf{x} = \mathbf{0}]).
 
 [TIP]
 ====
@@ -207,7 +228,7 @@ El **Broadcasting** es una regla matemática y computacional que permite realiza
 
 Dos dimensiones son compatibles para el broadcasting si:
 1. Son iguales.
-2. Una de ellas es $1$.
+2. Una de ellas es stem:[1].
 
 [source, text]
 ----
@@ -222,20 +243,20 @@ A + B (Resultado: 3 x 4)
 
 Cuando trabajamos con funciones que toman vectores como entrada o salida, las reglas ordinarias de derivación se expanden.
 
-=== El Gradiente ($\nabla$)
-Si tenemos una función escalar $f(\vec{x})$ que depende de un vector $\vec{x}$, el gradiente es el vector de todas sus derivadas parciales:
+=== El Gradiente (stem:[\nabla])
+Si tenemos una función escalar stem:[f(\mathbf{x})] que depende de un vector stem:[\mathbf{x}], el gradiente es el vector de todas sus derivadas parciales:
 
 [stem]
 --
-\nabla f(\vec{x}) = \begin{pmatrix} \frac{\partial f}{\partial x_1} \\ \frac{\partial f}{\partial x_2} \\ \vdots \\ \frac{\partial f}{\partial x_n} \end{pmatrix}
+\nabla f(\mathbf{x}) = \begin{pmatrix} \frac{\partial f}{\partial x_1} \\ \frac{\partial f}{\partial x_2} \\ \vdots \\ \frac{\partial f}{\partial x_n} \end{pmatrix}
 --
 
-=== El Jacobiano ($\mathbf{J}$)
-Si tenemos una función vectorial $\vec{f}(\vec{x})$ (una función que toma un vector y devuelve otro), el Jacobiano es la matriz que contiene todas las derivadas parciales posibles:
+=== El Jacobiano (stem:[\mathbf{J}])
+Si tenemos una función vectorial stem:[\mathbf{f}(\mathbf{x})] (una función que toma un vector y devuelve otro), el Jacobiano es la matriz que contiene todas las derivadas parciales posibles:
 
 [stem]
 --
-\mathbf{J} = \frac{\partial \vec{f}}{\partial \vec{x}} = \begin{pmatrix}
+\mathbf{J} = \frac{\partial \mathbf{f}}{\partial \mathbf{x}} = \begin{pmatrix}
 \frac{\partial f_1}{\partial x_1} & \dots & \frac{\partial f_1}{\partial x_n} \\
 \vdots & \ddots & \vdots \\
 \frac{\partial f_m}{\partial x_1} & \dots & \frac{\partial f_m}{\partial x_n}
@@ -292,22 +313,22 @@ Como hemos visto, **Nx** funciona como un lenguaje para describir transformacion
 
 .5+| **Aritmética de Transformación** 
 | Suma / Resta | `Nx.add/2`, `Nx.subtract/2`
-| Escalamiento | `Nx.multiply/2` (Matriz y Escalar)
-| Multiplicación Matricial | `Nx.dot/2` (Composición de transformaciones)
+| Escalamiento | `Nx.multiply/2`
+| Multiplicación Matricial | `Nx.dot/2`
 | Producto Exterior | `Nx.outer/2`
 | Inversa de Matriz | `Nx.LinAlg.invert/1`
 
 .4+| **Análisis y Geometría** 
-| Resolución de Sistemas ($Ax = b$) | `Nx.LinAlg.solve/2`
+| Resolución ($Ax = b$) | `Nx.LinAlg.solve/2`
 | Norma (Magnitud) | `Nx.LinAlg.norm/2`
 | Determinante | `Nx.LinAlg.determinant/1`
-| Rango e Información (SVD) | `Nx.LinAlg.svd/1`
+| Rango e Información | `Nx.LinAlg.svd/1`
 
 .4+| **Cálculo Avanzado** 
-| Gradientes ($\nabla$) | `Nx.grad/1`
-| Diferenciación Automática | `Nx.ValueWithGrad`
+| Gradientes (stem:[\nabla]) | `Nx.grad/1`
+| Diferenciación Auto | `Nx.ValueWithGrad`
 | Potencia de Matriz | `Nx.LinAlg.matrix_power/2`
-| Descomposición QR / Cholesky | `Nx.LinAlg.qr/1`, `Nx.LinAlg.cholesky/1`
+| Descomposiciones | `QR`, `Cholesky`, `LU`
 |===
 
 [IMPORTANT]
