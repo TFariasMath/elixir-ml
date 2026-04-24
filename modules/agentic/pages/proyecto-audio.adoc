@@ -1,0 +1,173 @@
+= Proyecto: Transcripción de Audio
+:icons: font
+
+En este proyecto práctico, construimos un módulo funcional que demuestra cómo un agente puede "escuchar" archivos de audio usando Whisper a través de Bumblebee. El código se encuentra en el directorio `apps/audio_sensor`.
+
+== Estructura del Proyecto
+
+[source, text]
+----
+apps/audio_sensor/
+├── lib/
+│   └── audio_sensor.ex      # Módulo principal
+├── mix.exs                   # Configuración de dependencias
+├── test/
+│   └── audio_sensor_test.exs
+└── README.md
+----
+
+== Configuración (`mix.exs`)
+
+[source, elixir]
+----
+defmodule AudioSensor.MixProject do
+  use Mix.Project
+
+  def project do
+    [
+      app: :audio_sensor,
+      version: "0.1.0",
+      elixir: "~> 1.18",
+      start_permanent: Mix.env() == :prod,
+      deps: deps()
+    ]
+  end
+
+  def application do
+    [extra_applications: [:logger]]
+  end
+
+  defp deps do
+    [
+      {:bumblebee, "~> 0.6.0"},
+      {:nx, "~> 0.9.0"},
+      {:exla, "~> 0.9.0"}
+    ]
+  end
+end
+----
+
+== Código Fuente (`lib/audio_sensor.ex`)
+
+[source, elixir]
+----
+defmodule AudioSensor do
+  @moduledoc """
+  Sensor auditivo basado en Whisper (OpenAI) via Bumblebee.
+  Demuestra cómo un agente puede percibir información del
+  entorno a través del audio.
+  """
+
+  @modelo_default "openai/whisper-tiny"
+
+  @doc """
+  Inicializa el sensor cargando el modelo Whisper.
+  Retorna un serving reutilizable.
+
+  ## Opciones
+  - `:modelo` — ID del modelo en Hugging Face (default: whisper-tiny)
+  """
+  def init(opts \\ []) do
+    modelo = Keyword.get(opts, :modelo, @modelo_default)
+    IO.puts("⏳ Descargando modelo #{modelo}...")
+
+    {:ok, whisper} = Bumblebee.load_model({:hf, modelo})
+    {:ok, featurizer} = Bumblebee.load_featurizer({:hf, modelo})
+    {:ok, tokenizer} = Bumblebee.load_tokenizer({:hf, modelo})
+    {:ok, generation_config} = Bumblebee.load_generation_config({:hf, modelo})
+
+    serving = Bumblebee.Audio.speech_to_text(
+      whisper,
+      featurizer,
+      tokenizer,
+      generation_config,
+      compile: [batch_size: 1],
+      defn_options: [compiler: EXLA]
+    )
+
+    IO.puts("✅ Sensor auditivo listo.")
+    serving
+  end
+
+  @doc """
+  Transcribe un archivo de audio a texto.
+
+  ## Ejemplos
+
+      iex> serving = AudioSensor.init()
+      iex> AudioSensor.transcribir(serving, "grabacion.mp3")
+      "Hello, this is a test recording."
+  """
+  def transcribir(serving, ruta_archivo) do
+    unless File.exists?(ruta_archivo) do
+      raise "Archivo no encontrado: #{ruta_archivo}"
+    end
+
+    resultado = Nx.Serving.run(serving, {:file, ruta_archivo})
+
+    resultado.results
+    |> Enum.map(& &1.text)
+    |> Enum.join(" ")
+    |> String.trim()
+  end
+
+  @doc """
+  Transcribe un lote de archivos en paralelo.
+  """
+  def transcribir_lote(serving, rutas) do
+    rutas
+    |> Enum.filter(&File.exists?/1)
+    |> Task.async_stream(
+      fn ruta -> {ruta, transcribir(serving, ruta)} end,
+      max_concurrency: System.schedulers_online(),
+      timeout: 120_000
+    )
+    |> Enum.map(fn {:ok, resultado} -> resultado end)
+  end
+end
+----
+
+== Ejecución
+
+[source, bash]
+----
+cd apps/audio_sensor
+mix deps.get
+iex -S mix
+----
+
+Dentro de la consola interactiva:
+
+[source, elixir]
+----
+# 1. Inicializar el sensor (descarga el modelo la primera vez)
+serving = AudioSensor.init()
+
+# 2. Transcribir un archivo
+texto = AudioSensor.transcribir(serving, "ejemplo.mp3")
+IO.puts("Texto: #{texto}")
+
+# 3. Procesar múltiples archivos
+resultados = AudioSensor.transcribir_lote(serving, [
+  "audio1.wav",
+  "audio2.mp3"
+])
+
+Enum.each(resultados, fn {archivo, texto} ->
+  IO.puts("📄 #{archivo}: #{texto}")
+end)
+----
+
+[IMPORTANT]
+====
+* **FFmpeg** debe estar instalado en tu sistema (`choco install ffmpeg` en Windows).
+* La primera ejecución descarga el modelo (~150MB para whisper-tiny). Las siguientes cargas son mucho más rápidas gracias al caché local.
+* Para mayor precisión en español, cambia a `"openai/whisper-small"` en las opciones de `init/1`.
+====
+
+== Posibles Mejoras
+
+* **Streaming en tiempo real:** Integrar con https://membrane.stream/[Membrane Framework] para procesar audio del micrófono en tiempo real.
+* **Detección de idioma:** Usar la capacidad de Whisper para detectar el idioma automáticamente antes de transcribir.
+* **Pipeline con LLM:** Conectar la salida de la transcripción con un LLM para generar resúmenes, traducir o responder preguntas sobre el contenido del audio.
+* **GenServer persistente:** Convertir el sensor en un proceso autónomo que acepta archivos como mensajes y emite transcripciones como eventos.

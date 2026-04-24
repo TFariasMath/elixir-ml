@@ -6,6 +6,12 @@
 
 .Sensores y Percepción
 * xref:ocr.adoc[OCR en Elixir]
+* xref:reconocimiento-voz.adoc[Reconocimiento de Voz (Whisper)]
+* xref:deteccion-objetos.adoc[Detección de Objetos (ResNet/YOLO)]
+* xref:sensores-digitales.adoc[Sensores Digitales (Web)]
 
 .Proyectos
 * xref:proyecto-ocr.adoc[Script de OCR]
+* xref:proyecto-audio.adoc[Transcripción de Audio]
+* xref:proyecto-vision.adoc[Clasificación de Imágenes]
+* xref:proyecto-web-sensor.adoc[Monitor Web Autónomo]

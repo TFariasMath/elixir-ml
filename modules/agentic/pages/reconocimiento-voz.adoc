@@ -1,0 +1,207 @@
+= Reconocimiento de Voz: El Sentido del Oído
+:icons: font
+
+Si el OCR le otorga al agente la capacidad de leer, el **Reconocimiento Automático de Voz** (ASR, por _Automatic Speech Recognition_) le concede la facultad de escuchar. Es el sensor que transforma ondas sonoras en secuencias de texto que el agente puede razonar, clasificar y responder.
+
+En la terminología xref:peas.adoc[PEAS], el módulo de ASR funciona como un **sensor auditivo**: captura un percepto acústico del entorno y lo traduce a una representación simbólica que alimenta la función del agente.
+
+== ¿Qué es Whisper?
+
+https://github.com/openai/whisper[Whisper] es un modelo de reconocimiento de voz desarrollado por OpenAI y entrenado sobre 680.000 horas de audio multilingüe. Puede realizar:
+
+* **Transcripción:** Convertir audio a texto en el mismo idioma.
+* **Traducción:** Convertir audio en cualquier idioma a texto en inglés.
+* **Detección de idioma:** Identificar automáticamente el idioma hablado.
+
+Lo que hace a Whisper especialmente robusto es su entrenamiento supervisado a gran escala: no necesita fine-tuning para la mayoría de casos de uso prácticos.
+
+=== Variantes del Modelo
+
+Whisper viene en múltiples tamaños. Para un agente que necesita velocidad sobre precisión absoluta, las versiones menores son ideales:
+
+[cols="1,1,1,2", options="header"]
+|===
+| Modelo | Parámetros | VRAM | Caso de Uso
+
+| **Tiny**
+| 39M
+| ~1 GB
+| Prototipado rápido, IoT, dispositivos con recursos limitados.
+
+| **Base**
+| 74M
+| ~1 GB
+| Transcripción general de calidad aceptable.
+
+| **Small**
+| 244M
+| ~2 GB
+| Balance entre velocidad y precisión.
+
+| **Medium**
+| 769M
+| ~5 GB
+| Alta precisión para producción.
+
+| **Large**
+| 1550M
+| ~10 GB
+| Máxima precisión, múltiples idiomas.
+|===
+
+[TIP]
+====
+Para los ejemplos de este libro usaremos **Whisper Tiny**, que se descarga en segundos y corre sin GPU. Para un sistema en producción, evalúa **Small** o **Medium**.
+====
+
+== Bumblebee: IA Pre-entrenada en Elixir
+
+https://hexdocs.pm/bumblebee[Bumblebee] es la librería del ecosistema Elixir que permite descargar y ejecutar modelos pre-entrenados de Hugging Face directamente en la BEAM. Es el puente entre los modelos de IA del mundo Python y la concurrencia nativa de Elixir.
+
+=== Dependencias
+
+[source, elixir]
+----
+defp deps do
+  [
+    {:bumblebee, "~> 0.6.0"},
+    {:nx, "~> 0.9.0"},
+    {:exla, "~> 0.9.0"}  # Aceleración por hardware
+  ]
+end
+----
+
+[IMPORTANT]
+====
+**FFmpeg es obligatorio.** Bumblebee usa `ffmpeg` internamente para decodificar archivos de audio y convertirlos al formato tensorial que Whisper espera. Asegúrate de tenerlo instalado:
+
+* **Windows:** `choco install ffmpeg`
+* **Ubuntu/Debian:** `sudo apt install ffmpeg`
+* **macOS:** `brew install ffmpeg`
+====
+
+== Implementación: Transcribir Audio
+
+El flujo para transcribir un archivo de audio es:
+
+[.text-center]
+[mermaid]
+....
+graph LR
+    A["Archivo .mp3/.wav"] --> B["FFmpeg<br/>(Decodificación)"]
+    B --> C["Featurizer<br/>(Mel Spectrogram)"]
+    C --> D["Whisper<br/>(Inferencia)"]
+    D --> E["Texto transcrito"]
+....
+
+=== Código Completo
+
+[source, elixir]
+----
+defmodule SensorAudio do
+  @moduledoc """
+  Sensor auditivo para un agente. Usa Whisper (via Bumblebee) 
+  para transformar archivos de audio en texto.
+  """
+
+  @doc """
+  Carga el modelo Whisper y retorna un serving listo para usar.
+  Solo necesita ejecutarse una vez; el serving se puede reutilizar.
+  """
+  def cargar_modelo(modelo \\ "openai/whisper-tiny") do
+    {:ok, whisper} = Bumblebee.load_model({:hf, modelo})
+    {:ok, featurizer} = Bumblebee.load_featurizer({:hf, modelo})
+    {:ok, tokenizer} = Bumblebee.load_tokenizer({:hf, modelo})
+    {:ok, generation_config} = Bumblebee.load_generation_config({:hf, modelo})
+
+    Bumblebee.Audio.speech_to_text(
+      whisper,
+      featurizer,
+      tokenizer,
+      generation_config,
+      compile: [batch_size: 1],
+      defn_options: [compiler: EXLA]
+    )
+  end
+
+  @doc """
+  Transcribe un archivo de audio y retorna el texto extraído.
+
+  ## Ejemplos
+
+      iex> serving = SensorAudio.cargar_modelo()
+      iex> SensorAudio.transcribir(serving, "audio.mp3")
+      "Hola mundo, esta es una prueba de transcripción."
+  """
+  def transcribir(serving, ruta_archivo) do
+    resultado = Nx.Serving.run(serving, {:file, ruta_archivo})
+
+    resultado.results
+    |> Enum.map(& &1.text)
+    |> Enum.join(" ")
+    |> String.trim()
+  end
+
+  @doc """
+  Transcribe múltiples archivos de audio.
+  Aprovecha la concurrencia de Elixir para procesar en paralelo.
+  """
+  def transcribir_lote(serving, rutas) do
+    rutas
+    |> Task.async_stream(fn ruta ->
+      {ruta, transcribir(serving, ruta)}
+    end, max_concurrency: System.schedulers_online())
+    |> Enum.map(fn {:ok, resultado} -> resultado end)
+  end
+end
+----
+
+=== Uso en IEx
+
+[source, elixir]
+----
+# 1. Cargar el modelo (descarga automática la primera vez)
+serving = SensorAudio.cargar_modelo()
+
+# 2. Transcribir un archivo
+texto = SensorAudio.transcribir(serving, "grabacion.mp3")
+IO.puts("El agente escuchó: #{texto}")
+
+# 3. Transcribir varios archivos
+resultados = SensorAudio.transcribir_lote(serving, [
+  "audio1.wav",
+  "audio2.mp3",
+  "audio3.wav"
+])
+
+for {archivo, texto} <- resultados do
+  IO.puts("#{archivo}: #{texto}")
+end
+----
+
+== Limitaciones y Consideraciones
+
+[cols="1,3", options="header"]
+|===
+| Limitación | Descripción
+
+| **Ventana de 30 segundos**
+| Whisper procesa audio en segmentos de ~30s. Para archivos largos, Bumblebee los fragmenta automáticamente, pero la precisión puede variar en las fronteras.
+
+| **Idioma**
+| El modelo _Tiny_ funciona mejor en inglés. Para español u otros idiomas, _Small_ o superior dan mejores resultados.
+
+| **Tiempo real**
+| El ejemplo procesa archivos. Para transcripción en vivo (streaming), se necesitaría integrar con un framework de audio como https://membrane.stream/[Membrane].
+|===
+
+[NOTE]
+====
+**Conexión con el agente:** En un sistema real, el output de este sensor alimentaría el razonamiento del agente. Por ejemplo, un agente de atención al cliente podría: (1) escuchar al usuario con Whisper, (2) razonar con un LLM sobre la respuesta, (3) actuar enviando un mensaje de vuelta.
+====
+
+== Referencias
+
+- https://hexdocs.pm/bumblebee[Bumblebee — HexDocs]
+- https://github.com/openai/whisper[Whisper — OpenAI GitHub]
+- https://huggingface.co/openai/whisper-tiny[Modelo Whisper Tiny — Hugging Face]

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Sensores Digitales: Percibir la Red :: Elixir ML &amp; LLM</title>
+    <link rel="canonical" href="https://elixircl.github.io/elixir-ml/agentic/sensores-digitales.html">
+    <link rel="prev" href="deteccion-objetos.html">
+    <link rel="next" href="proyecto-ocr.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/js/vendor/styles/monokai.css">  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://elixircl.github.io/elixir-ml">Elixir ML &amp; LLM</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Buscar">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+    -->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">Elixir ML &amp; LLM</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Inicio</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Bienvenida</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Programación Agéntica</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="introduction.html">Introducción a la Programación Agéntica</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="que-es-un-agente.html">¿Qué es un agente?</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="peas.html">PEAS: Descripción de Tareas</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="instalar-elixir-vscode.html">Configurar VSCode con Elixir y OpenCode</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Sensores y Percepción</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="ocr.html">OCR en Elixir</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="reconocimiento-voz.html">Reconocimiento de Voz (Whisper)</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="deteccion-objetos.html">Detección de Objetos (ResNet/YOLO)</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="sensores-digitales.html">Sensores Digitales (Web)</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Proyectos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="proyecto-ocr.html">Script de OCR</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="proyecto-audio.html">Transcripción de Audio</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="proyecto-vision.html">Clasificación de Imágenes</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="proyecto-web-sensor.html">Monitor Web Autónomo</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Apéndice: Matemática</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../matematica/logica-proposicional.html">Lógica Proposicional</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../matematica/algebra-lineal.html">Álgebra Lineal</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../matematica/estadistica-descriptiva.html">Estadística Descriptiva</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../matematica/modelos-probabilisticos.html">Modelos Probabilísticos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../matematica/inferencia-estadistica.html">Inferencia Estadística</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Elixir ML &amp; LLM</span>
+    <span class="version"></span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">Elixir ML & LLM</a></div>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Elixir ML & LLM</a></li>
+    <li>Sensores y Percepción</li>
+    <li><a href="sensores-digitales.html">Sensores Digitales (Web)</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="file:///C:/Users/USER/Documents/Apuntes_Elixir_Libro/elixir-ml/./modules/agentic/pages/sensores-digitales.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contenidos" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Sensores Digitales: Percibir la Red</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>No todos los entornos de un agente son físicos. Para un agente que vive en el ecosistema digital, <strong>internet es su entorno</strong> y las páginas web, APIs y flujos de datos son sus perceptos. El <em>web scraping</em> ético es, en esencia, el mecanismo por el cual un agente digital <strong>percibe</strong> el estado del mundo.</p>
+</div>
+<div class="paragraph">
+<p>En la terminología <a href="peas.html" class="xref page">PEAS</a>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Sensor:</strong> Cliente HTTP + Parser HTML/JSON.</p>
+</li>
+<li>
+<p><strong>Percepto:</strong> Datos estructurados extraídos (precio, temperatura, estado de un servicio).</p>
+</li>
+<li>
+<p><strong>Entorno:</strong> Sitios web, APIs públicas, dashboards.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="arquitectura-fetch-parse-act"><a class="anchor" href="#arquitectura-fetch-parse-act"></a>Arquitectura: Fetch → Parse → Act</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Un sensor digital sigue un ciclo que recuerda al bucle fundamental de un agente:</p>
+</div>
+<div class="imageblock text-center kroki-format-svg kroki">
+<div class="content">
+<img src="_images/diag-1b3d6eb702e264e76166a2aa1699692dfa4f5443.svg" alt="Diagram">
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Fetch:</strong> El agente realiza una petición HTTP al recurso objetivo.</p>
+</li>
+<li>
+<p><strong>Parse:</strong> Extrae los datos relevantes del HTML o JSON recibido.</p>
+</li>
+<li>
+<p><strong>Decidir:</strong> Evalúa los datos contra sus reglas o umbrales internos.</p>
+</li>
+<li>
+<p><strong>Actuar:</strong> Ejecuta una acción (alarma, log, notificación, actualización de estado).</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="herramientas-del-ecosistema-elixir"><a class="anchor" href="#herramientas-del-ecosistema-elixir"></a>Herramientas del Ecosistema Elixir</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 33.3333%;">
+<col style="width: 50.0001%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Librería</th>
+<th class="tableblock halign-left valign-top">Rol</th>
+<th class="tableblock halign-left valign-top">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://hexdocs.pm/req"><strong>Req</strong></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cliente HTTP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Moderno, simple, con reintentos automáticos y manejo de redirecciones. Reemplaza a HTTPoison.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://hexdocs.pm/floki"><strong>Floki</strong></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Parser HTML</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rápido parser de HTML basado en selectores CSS. Convierte HTML en estructuras Elixir navegables.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://hexdocs.pm/jason"><strong>Jason</strong></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Parser JSON</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Decodifica respuestas JSON de APIs. Incluido en la mayoría de proyectos Phoenix.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://hexdocs.pm/finch"><strong>Finch</strong></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pool de conexiones</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Para escenarios de alto rendimiento con miles de peticiones concurrentes.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="dependencias"><a class="anchor" href="#dependencias"></a>Dependencias</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-elixir hljs" data-lang="elixir">defp deps do
+  [
+    {:req, "~&gt; 0.5.0"},
+    {:floki, "~&gt; 0.37.0"}
+  ]
+end</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="implementación-sensor-de-precio-de-bitcoin"><a class="anchor" href="#implementación-sensor-de-precio-de-bitcoin"></a>Implementación: Sensor de Precio de Bitcoin</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Veamos cómo construir un sensor que monitorea el precio de Bitcoin como un percepto del entorno financiero digital:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-elixir hljs" data-lang="elixir">defmodule SensorWeb do
+  @moduledoc """
+  Sensor digital para un agente. Percibe datos del
+  entorno web (APIs, páginas) y los transforma en perceptos estructurados.
+  """
+
+  @doc """
+  Obtiene el precio actual de Bitcoin desde la API pública de CoinGecko.
+  Retorna un mapa con el percepto estructurado.
+
+  ## Ejemplo de output
+
+      %{
+        asset: "bitcoin",
+        price_usd: 64523.0,
+        change_24h: -2.3,
+        timestamp: ~U[2026-04-20 10:00:00Z]
+      }
+  """
+  def precio_bitcoin do
+    url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&amp;vs_currencies=usd&amp;include_24hr_change=true"
+
+    case Req.get(url) do
+      {:ok, %{status: 200, body: body}} -&gt;
+        btc = body["bitcoin"]
+
+        %{
+          asset: "bitcoin",
+          price_usd: btc["usd"],
+          change_24h: Float.round(btc["usd_24h_change"], 2),
+          timestamp: DateTime.utc_now()
+        }
+
+      {:ok, %{status: status}} -&gt;
+        {:error, "HTTP #{status}"}
+
+      {:error, reason} -&gt;
+        {:error, reason}
+    end
+  end
+
+  @doc """
+  Extrae datos de una página web HTML usando selectores CSS.
+  Útil cuando no existe una API disponible.
+  """
+  def scrape(url, selector) do
+    case Req.get(url) do
+      {:ok, %{status: 200, body: html}} -&gt;
+        html
+        |&gt; Floki.parse_document!()
+        |&gt; Floki.find(selector)
+        |&gt; Floki.text()
+        |&gt; String.trim()
+
+      {:ok, %{status: status}} -&gt;
+        {:error, "HTTP #{status}"}
+
+      {:error, reason} -&gt;
+        {:error, reason}
+    end
+  end
+end</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="agente-autónomo-genserver-como-monitor"><a class="anchor" href="#agente-autónomo-genserver-como-monitor"></a>Agente Autónomo: GenServer como Monitor</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>La verdadera potencia de Elixir entra en juego cuando convertimos el sensor en un <strong>proceso autónomo</strong> que monitorea el entorno indefinidamente. Un <code>GenServer</code> es la herramienta perfecta para esto:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-elixir hljs" data-lang="elixir">defmodule AgenteMonitor do
+  use GenServer
+  require Logger
+
+  @moduledoc """
+  Un agente autónomo que monitorea el precio de Bitcoin
+  periódicamente y reacciona ante cambios significativos.
+
+  Demuestra el patrón Percepto → Decisión → Acción
+  implementado como un proceso persistente de la BEAM.
+  """
+
+  # --- API Pública ---
+
+  def start_link(opts \\ []) do
+    intervalo = Keyword.get(opts, :intervalo, 60_000)  # 60 segundos
+    umbral = Keyword.get(opts, :umbral, 5.0)            # 5% de cambio
+
+    GenServer.start_link(__MODULE__, %{
+      intervalo: intervalo,
+      umbral: umbral,
+      ultimo_precio: nil,
+      historial: []
+    }, name: __MODULE__)
+  end
+
+  def estado, do: GenServer.call(__MODULE__, :estado)
+  def detener, do: GenServer.stop(__MODULE__)
+
+  # --- Callbacks ---
+
+  @impl true
+  def init(state) do
+    Logger.info("🤖 Agente Monitor iniciado. Intervalo: #{state.intervalo}ms")
+    # Programar el primer chequeo inmediatamente
+    send(self(), :percibir)
+    {:ok, state}
+  end
+
+  @impl true
+  def handle_info(:percibir, state) do
+    # 1. PERCIBIR: Obtener datos del entorno
+    percepto = SensorWeb.precio_bitcoin()
+
+    state = case percepto do
+      %{price_usd: precio, change_24h: cambio} = p -&gt;
+        Logger.info("📊 BTC: $#{precio} (#{cambio}% 24h)")
+
+        # 2. DECIDIR: ¿El cambio supera nuestro umbral?
+        if abs(cambio) &gt; state.umbral do
+          # 3. ACTUAR: Responder al evento
+          direccion = if cambio &gt; 0, do: "📈 SUBE", else: "📉 BAJA"
+          Logger.warning("⚠️  #{direccion} #{abs(cambio)}% — Precio: $#{precio}")
+        end
+
+        # Actualizar modelo interno del mundo
+        %{state |
+          ultimo_precio: precio,
+          historial: [p | Enum.take(state.historial, 99)]
+        }
+
+      {:error, razon} -&gt;
+        Logger.error("❌ Error al percibir: #{inspect(razon)}")
+        state
+    end
+
+    # Programar siguiente percepción
+    Process.send_after(self(), :percibir, state.intervalo)
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_call(:estado, _from, state) do
+    {:reply, state, state}
+  end
+end</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="uso"><a class="anchor" href="#uso"></a>Uso</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-elixir hljs" data-lang="elixir"># Iniciar el agente monitor
+{:ok, _pid} = AgenteMonitor.start_link(intervalo: 30_000, umbral: 3.0)
+
+# El agente ahora corre de forma autónoma en segundo plano.
+# Se puede consultar su estado en cualquier momento:
+AgenteMonitor.estado()
+
+# Para detenerlo:
+AgenteMonitor.detener()</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Scraping Ético:</strong> Al usar sensores digitales, debemos respetar las reglas del entorno:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Revisar el archivo <code>robots.txt</code> del sitio antes de scrapear.</p>
+</li>
+<li>
+<p>No realizar peticiones excesivas (usar intervalos razonables).</p>
+</li>
+<li>
+<p>Preferir APIs públicas cuando existan.</p>
+</li>
+<li>
+<p>Si el sitio prohíbe el scraping, no hacerlo.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="supervisión-tolerancia-a-fallos"><a class="anchor" href="#supervisión-tolerancia-a-fallos"></a>Supervisión: Tolerancia a Fallos</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>En Elixir, un agente no tiene por qué lidiar él mismo con sus errores. Los <strong>árboles de supervisión</strong> se encargan de reiniciar procesos que fallan:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-elixir hljs" data-lang="elixir">defmodule AgenteApp do
+  use Application
+
+  def start(_type, _args) do
+    children = [
+      {AgenteMonitor, intervalo: 60_000, umbral: 5.0}
+    ]
+
+    Supervisor.start_link(children, strategy: :one_for_one)
+  end
+end</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Esta es una de las grandes ventajas de Elixir sobre lenguajes como Python para sistemas agénticos: si el sensor web falla (timeout, DNS, etc.), el supervisor reinicia automáticamente el agente sin intervención humana. Es la filosofía <strong>"let it crash"</strong> aplicada a la IA.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="expandiendo-más-sensores-digitales"><a class="anchor" href="#expandiendo-más-sensores-digitales"></a>Expandiendo: Más Sensores Digitales</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>El patrón <code>Fetch → Parse → Decide → Act</code> se aplica a cualquier fuente de datos:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 40%;">
+<col style="width: 40%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Fuente de Datos</th>
+<th class="tableblock halign-left valign-top">Percepto</th>
+<th class="tableblock halign-left valign-top">Caso de Uso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>APIs REST</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Precio, clima, estado de servicio</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Trading, alertas meteorológicas, health checks</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Páginas HTML</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Texto, precios, disponibilidad</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Monitoreo de competencia, alertas de stock</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>WebSockets</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Eventos en tiempo real</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chat bots, feeds de mercado, IoT dashboards</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>RSS/Atom</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Noticias, publicaciones</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Curación de contenido, alertas de noticias</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Email (IMAP)</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mensajes entrantes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Agente de soporte, clasificación automática</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="referencias"><a class="anchor" href="#referencias"></a>Referencias</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://hexdocs.pm/req">Req — HexDocs</a></p>
+</li>
+<li>
+<p><a href="https://hexdocs.pm/floki">Floki — HexDocs</a></p>
+</li>
+<li>
+<p><a href="https://www.coingecko.com/api/documentation">CoinGecko API — Docs</a></p>
+</li>
+<li>
+<p><a href="https://hexdocs.pm/elixir/GenServer.html">GenServer — Elixir Docs</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="deteccion-objetos.html">Detección de Objetos (ResNet/YOLO)</a></span>
+  <span class="next"><a href="proyecto-ocr.html">Script de OCR</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script src="../_/js/vendor/lunr.js"></script>
+<script src="../_/js/search-ui.js" id="search-ui-script" data-site-root-path=".." data-snippet-length="100" data-stylesheet="../_/css/search.css"></script>
+<script async src="../search-index.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      ignoreHtmlClass: 'nostem|no-mathjax'
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  </body>
+</html>

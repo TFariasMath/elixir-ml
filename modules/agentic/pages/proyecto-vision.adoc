@@ -1,0 +1,199 @@
+= Proyecto: Clasificación de Imágenes
+:icons: font
+
+En este proyecto construimos un módulo que demuestra cómo un agente puede identificar objetos en imágenes usando ResNet-50 a través de Bumblebee. El código se encuentra en `apps/vision_sensor`.
+
+== Estructura del Proyecto
+
+[source, text]
+----
+apps/vision_sensor/
+├── lib/
+│   └── vision_sensor.ex      # Módulo principal
+├── mix.exs
+├── test/
+│   └── vision_sensor_test.exs
+└── README.md
+----
+
+== Configuración (`mix.exs`)
+
+[source, elixir]
+----
+defmodule VisionSensor.MixProject do
+  use Mix.Project
+
+  def project do
+    [
+      app: :vision_sensor,
+      version: "0.1.0",
+      elixir: "~> 1.18",
+      start_permanent: Mix.env() == :prod,
+      deps: deps()
+    ]
+  end
+
+  def application do
+    [extra_applications: [:logger]]
+  end
+
+  defp deps do
+    [
+      {:bumblebee, "~> 0.6.0"},
+      {:nx, "~> 0.9.0"},
+      {:exla, "~> 0.9.0"},
+      {:stb_image, "~> 0.6.0"}
+    ]
+  end
+end
+----
+
+== Código Fuente (`lib/vision_sensor.ex`)
+
+[source, elixir]
+----
+defmodule VisionSensor do
+  @moduledoc """
+  Sensor visual basado en ResNet-50 via Bumblebee.
+  Clasifica el contenido principal de una imagen entre
+  1000 categorías de ImageNet.
+  """
+
+  @modelo_default "microsoft/resnet-50"
+
+  @doc """
+  Inicializa el sensor visual cargando el modelo ResNet.
+  Retorna un serving reutilizable para clasificación.
+  """
+  def init(opts \\ []) do
+    modelo = Keyword.get(opts, :modelo, @modelo_default)
+    top_k = Keyword.get(opts, :top_k, 5)
+
+    IO.puts("⏳ Cargando modelo #{modelo}...")
+
+    {:ok, resnet} = Bumblebee.load_model({:hf, modelo})
+    {:ok, featurizer} = Bumblebee.load_featurizer({:hf, modelo})
+
+    serving = Bumblebee.Vision.image_classification(resnet, featurizer,
+      top_k: top_k,
+      compile: [batch_size: 1],
+      defn_options: [compiler: EXLA]
+    )
+
+    IO.puts("✅ Sensor visual listo (top-#{top_k} predicciones).")
+    serving
+  end
+
+  @doc """
+  Clasifica una imagen desde su ruta en disco.
+  Retorna las predicciones ordenadas por confianza.
+
+  ## Ejemplos
+
+      iex> serving = VisionSensor.init()
+      iex> VisionSensor.clasificar(serving, "gato.jpg")
+      [
+        %{label: "tabby, tabby cat", score: 0.8921},
+        %{label: "tiger cat", score: 0.0531},
+        ...
+      ]
+  """
+  def clasificar(serving, ruta_imagen) do
+    unless File.exists?(ruta_imagen) do
+      raise "Imagen no encontrada: #{ruta_imagen}"
+    end
+
+    imagen = StbImage.read_file!(ruta_imagen)
+    resultado = Nx.Serving.run(serving, imagen)
+
+    resultado.predictions
+    |> Enum.map(fn %{label: label, score: score} ->
+      %{label: label, score: Float.round(score, 4)}
+    end)
+  end
+
+  @doc """
+  Retorna solo la predicción principal (clase más probable).
+  """
+  def clasificar_principal(serving, ruta_imagen) do
+    case clasificar(serving, ruta_imagen) do
+      [%{label: label, score: score} | _] ->
+        %{label: label, score: score}
+
+      [] ->
+        %{label: "desconocido", score: 0.0}
+    end
+  end
+
+  @doc """
+  Clasifica múltiples imágenes en paralelo.
+  """
+  def clasificar_lote(serving, rutas) do
+    rutas
+    |> Enum.filter(&File.exists?/1)
+    |> Task.async_stream(
+      fn ruta ->
+        %{archivo: ruta, predicciones: clasificar(serving, ruta)}
+      end,
+      max_concurrency: System.schedulers_online(),
+      timeout: 60_000
+    )
+    |> Enum.map(fn {:ok, resultado} -> resultado end)
+  end
+end
+----
+
+== Ejecución
+
+[source, bash]
+----
+cd apps/vision_sensor
+mix deps.get
+iex -S mix
+----
+
+Dentro de la consola interactiva:
+
+[source, elixir]
+----
+# 1. Inicializar (descarga modelo ~100MB la primera vez)
+serving = VisionSensor.init()
+
+# 2. Clasificar una imagen
+predicciones = VisionSensor.clasificar(serving, "foto.jpg")
+
+for %{label: label, score: score} <- predicciones do
+  porcentaje = Float.round(score * 100, 1)
+  IO.puts("  #{label}: #{porcentaje}%")
+end
+
+# 3. Solo la predicción principal
+%{label: clase} = VisionSensor.clasificar_principal(serving, "foto.jpg")
+IO.puts("La imagen es: #{clase}")
+
+# 4. Clasificar un lote
+resultados = VisionSensor.clasificar_lote(serving, [
+  "imagen1.jpg",
+  "imagen2.png",
+  "imagen3.jpg"
+])
+
+for %{archivo: archivo, predicciones: preds} <- resultados do
+  [%{label: top} | _] = preds
+  IO.puts("#{archivo} → #{top}")
+end
+----
+
+[IMPORTANT]
+====
+* El modelo ResNet-50 se descarga la primera vez (~100MB) y se cachea localmente.
+* Las imágenes deben estar en formatos comunes: `.jpg`, `.png`, `.bmp`.
+* ResNet clasifica entre las 1000 categorías de ImageNet. Para clases personalizadas, se necesitaría fine-tuning.
+====
+
+== Posibles Mejoras
+
+* **Detección con YOLO:** Añadir soporte para la librería `yolo` para encontrar múltiples objetos con bounding boxes. Consulta la página xref:deteccion-objetos.adoc[Detección de Objetos] para más detalles.
+* **Pipeline multi-sensor:** Combinar con OCR para una percepción visual completa: detectar objetos + leer texto dentro de ellos.
+* **Clasificación personalizada:** Usar un modelo fine-tuned para categorías específicas de tu dominio.
+* **GenServer con cámara:** Integrar con una fuente de video (webcam, RTSP) para clasificación continua en tiempo real.

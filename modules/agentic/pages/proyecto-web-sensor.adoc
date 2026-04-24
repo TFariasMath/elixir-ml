@@ -1,0 +1,302 @@
+= Proyecto: Monitor Web Autónomo
+:icons: font
+
+En este proyecto construimos un agente autónomo que monitorea el precio de Bitcoin como demostración de un sensor digital. El agente corre como un proceso persistente de la BEAM, percibe datos de una API, y reacciona ante cambios significativos. El código se encuentra en `apps/web_sensor`.
+
+== Estructura del Proyecto
+
+[source, text]
+----
+apps/web_sensor/
+├── lib/
+│   ├── sensor_web.ex         # Sensor (Fetch + Parse)
+│   ├── agente_monitor.ex     # Agente (Decide + Act)
+│   └── web_sensor_app.ex     # Application con Supervisor
+├── mix.exs
+├── test/
+│   └── web_sensor_test.exs
+└── README.md
+----
+
+== Configuración (`mix.exs`)
+
+[source, elixir]
+----
+defmodule WebSensor.MixProject do
+  use Mix.Project
+
+  def project do
+    [
+      app: :web_sensor,
+      version: "0.1.0",
+      elixir: "~> 1.18",
+      start_permanent: Mix.env() == :prod,
+      deps: deps()
+    ]
+  end
+
+  def application do
+    [
+      extra_applications: [:logger],
+      mod: {WebSensorApp, []}
+    ]
+  end
+
+  defp deps do
+    [
+      {:req, "~> 0.5.0"},
+      {:floki, "~> 0.37.0"}
+    ]
+  end
+end
+----
+
+== Código Fuente
+
+=== Sensor (`lib/sensor_web.ex`)
+
+El sensor se encarga exclusivamente de **percibir**: obtener los datos crudos del entorno y transformarlos en un percepto estructurado.
+
+[source, elixir]
+----
+defmodule SensorWeb do
+  @moduledoc """
+  Componente de percepción. Transforma datos del entorno 
+  digital (APIs, HTML) en perceptos estructurados.
+  """
+
+  @doc """
+  Obtiene el precio actual de Bitcoin desde CoinGecko.
+  """
+  def precio_bitcoin do
+    url = "https://api.coingecko.com/api/v3/simple/price" <>
+          "?ids=bitcoin&vs_currencies=usd&include_24hr_change=true"
+
+    case Req.get(url) do
+      {:ok, %{status: 200, body: body}} ->
+        btc = body["bitcoin"]
+        {:ok, %{
+          asset: "bitcoin",
+          precio_usd: btc["usd"],
+          cambio_24h: Float.round(btc["usd_24h_change"] || 0.0, 2),
+          timestamp: DateTime.utc_now()
+        }}
+
+      {:ok, %{status: status}} ->
+        {:error, "HTTP #{status}"}
+
+      {:error, exception} ->
+        {:error, Exception.message(exception)}
+    end
+  end
+
+  @doc """
+  Sensor genérico: extrae texto de una página web usando un selector CSS.
+  """
+  def scrape_texto(url, selector) do
+    case Req.get(url) do
+      {:ok, %{status: 200, body: html}} when is_binary(html) ->
+        texto =
+          html
+          |> Floki.parse_document!()
+          |> Floki.find(selector)
+          |> Floki.text()
+          |> String.trim()
+
+        {:ok, texto}
+
+      {:ok, %{status: status}} ->
+        {:error, "HTTP #{status}"}
+
+      {:error, exception} ->
+        {:error, Exception.message(exception)}
+    end
+  end
+end
+----
+
+=== Agente (`lib/agente_monitor.ex`)
+
+El agente se encarga de **decidir** y **actuar**: consulta periódicamente al sensor y reacciona según sus reglas internas.
+
+[source, elixir]
+----
+defmodule AgenteMonitor do
+  use GenServer
+  require Logger
+
+  @moduledoc """
+  Agente autónomo que monitorea precios de criptomonedas.
+  Implementa el ciclo: Percibir → Decidir → Actuar.
+  """
+
+  defstruct [
+    :intervalo,
+    :umbral,
+    :ultimo_precio,
+    historial: [],
+    alertas: 0
+  ]
+
+  # --- API Pública ---
+
+  def start_link(opts \\ []) do
+    GenServer.start_link(__MODULE__, opts, name: __MODULE__)
+  end
+
+  @doc "Consulta el estado actual del agente."
+  def estado, do: GenServer.call(__MODULE__, :estado)
+
+  @doc "Consulta el historial de precios observados."
+  def historial, do: GenServer.call(__MODULE__, :historial)
+
+  # --- Callbacks del GenServer ---
+
+  @impl true
+  def init(opts) do
+    state = %__MODULE__{
+      intervalo: Keyword.get(opts, :intervalo, 60_000),
+      umbral: Keyword.get(opts, :umbral, 5.0)
+    }
+
+    Logger.info("🤖 Agente Monitor iniciado")
+    Logger.info("   📊 Intervalo: #{div(state.intervalo, 1000)}s")
+    Logger.info("   🎯 Umbral de alerta: #{state.umbral}%")
+
+    # Primer chequeo inmediato
+    send(self(), :ciclo_percepcion)
+    {:ok, state}
+  end
+
+  @impl true
+  def handle_info(:ciclo_percepcion, state) do
+    state = ejecutar_ciclo(state)
+
+    # Programar siguiente ciclo
+    Process.send_after(self(), :ciclo_percepcion, state.intervalo)
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_call(:estado, _from, state) do
+    resumen = %{
+      ultimo_precio: state.ultimo_precio,
+      total_observaciones: length(state.historial),
+      alertas_emitidas: state.alertas,
+      umbral: state.umbral
+    }
+    {:reply, resumen, state}
+  end
+
+  @impl true
+  def handle_call(:historial, _from, state) do
+    {:reply, Enum.take(state.historial, 10), state}
+  end
+
+  # --- Lógica del Agente ---
+
+  defp ejecutar_ciclo(state) do
+    case SensorWeb.precio_bitcoin() do
+      {:ok, percepto} ->
+        procesar_percepto(state, percepto)
+
+      {:error, razon} ->
+        Logger.error("❌ Fallo en percepción: #{razon}")
+        state
+    end
+  end
+
+  defp procesar_percepto(state, %{precio_usd: precio, cambio_24h: cambio} = percepto) do
+    Logger.info("📊 BTC: $#{precio} | Cambio 24h: #{cambio}%")
+
+    # DECISIÓN: ¿El cambio supera nuestro umbral?
+    state = if abs(cambio) > state.umbral do
+      # ACCIÓN: Emitir alerta
+      emitir_alerta(precio, cambio)
+      %{state | alertas: state.alertas + 1}
+    else
+      state
+    end
+
+    # Actualizar modelo interno
+    %{state |
+      ultimo_precio: precio,
+      historial: [percepto | Enum.take(state.historial, 99)]
+    }
+  end
+
+  defp emitir_alerta(precio, cambio) do
+    {emoji, direccion} = if cambio > 0, do: {"📈", "SUBIDA"}, else: {"📉", "BAJADA"}
+
+    Logger.warning("""
+    ⚠️  ALERTA DE #{direccion} #{emoji}
+        Precio: $#{precio}
+        Cambio: #{abs(cambio)}% en 24h
+    """)
+  end
+end
+----
+
+=== Application (`lib/web_sensor_app.ex`)
+
+[source, elixir]
+----
+defmodule WebSensorApp do
+  use Application
+
+  @impl true
+  def start(_type, _args) do
+    children = [
+      {AgenteMonitor, intervalo: 60_000, umbral: 5.0}
+    ]
+
+    opts = [strategy: :one_for_one, name: WebSensor.Supervisor]
+    Supervisor.start_link(children, opts)
+  end
+end
+----
+
+== Ejecución
+
+[source, bash]
+----
+cd apps/web_sensor
+mix deps.get
+iex -S mix
+----
+
+Al iniciar, el agente comienza a monitorear automáticamente:
+
+[source, text]
+----
+🤖 Agente Monitor iniciado
+   📊 Intervalo: 60s
+   🎯 Umbral de alerta: 5.0%
+📊 BTC: $64523.0 | Cambio 24h: -1.2%
+----
+
+Puedes interactuar con el agente en cualquier momento:
+
+[source, elixir]
+----
+# Ver estado actual
+AgenteMonitor.estado()
+# => %{ultimo_precio: 64523.0, total_observaciones: 5, alertas_emitidas: 0, umbral: 5.0}
+
+# Ver historial reciente
+AgenteMonitor.historial()
+# => [%{asset: "bitcoin", precio_usd: 64523.0, ...}, ...]
+----
+
+[TIP]
+====
+El agente sobrevive a errores de red automáticamente gracias al supervisor. Si la API de CoinGecko no responde, el agente loguea el error y vuelve a intentar en el siguiente ciclo sin detenerse.
+====
+
+== Posibles Mejoras
+
+* **Múltiples activos:** Monitorear no solo Bitcoin, sino también Ethereum, SOL, etc. usando un pool de procesos.
+* **Persistencia:** Guardar el historial en una base de datos (ETS, SQLite o PostgreSQL) para análisis posterior.
+* **Notificaciones reales:** Enviar alertas por Telegram, Slack o email usando librerías como `Swoosh`.
+* **Análisis estadístico:** Usar las herramientas de xref:matematica:estadistica-descriptiva.adoc[Estadística Descriptiva] para calcular media móvil, volatilidad y detectar tendencias.
+* **Multi-agente:** Combinar con el sensor de noticias (RSS) para correlacionar movimientos de precio con eventos del mundo real.
